@@ -68,22 +68,29 @@ HRESULT DirectX_Lib::InitD3D( HWND hWnd )
     return S_OK;
 }
 
-void DirectX_Lib::LoadBackGroundData(void)
+void DirectX_Lib::LoadBackGroundData(LPCWSTR img)
 {
-	D3DXCreateTextureFromFile(g_pd3dDevice, _T(BACKGROUND_TEXTURE_PATH), &backGroundTexture);
+	//std::wstring temp = RESOURCE_PATH+img.c_str;
+	//LPCWSTR backgroundImg = (LPCWSTR)(temp);
+	D3DXCreateTextureFromFile(g_pd3dDevice, img, &backGroundTexture);
 }
 
 void DirectX_Lib::Initilize(void)
 {
 	InitWin();
 	InitDX();
-	LoadBackGroundData();
+	//LoadBackGroundData();
 
 	// Show the window
-	ShowWindow( g_hWnd, SW_SHOWDEFAULT );
-	UpdateWindow( g_hWnd );
+	//
 }
 
+void DirectX_Lib::ShowTheWindow()
+{
+	ShowWindow( g_hWnd, SW_SHOWDEFAULT );
+	UpdateWindow( g_hWnd );
+	//audio.audio();
+}
 //-----------------------------------------------------------------------------
 // Name: InitD3D()
 // Desc: Initializes Direct3D
@@ -128,8 +135,7 @@ VOID DirectX_Lib::Render()
 	vecPosition.x = 0.0f;
 	vecPosition.y = 0.0f;
 	vecPosition.z = .0f;
-
-
+	
     // Clear the backbuffer to a blue color
     g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
 
@@ -169,3 +175,14 @@ WNDCLASSEX DirectX_Lib::GetValueGWC()
 {
 	return g_wc;
 };
+
+void DirectX_Lib::PlayTheMusic()
+{
+	audio.Play();
+}
+
+void DirectX_Lib::LoadTheMusic()
+{
+	audio.LoadTheSource(AUDIO_RESOURCE);
+}
+

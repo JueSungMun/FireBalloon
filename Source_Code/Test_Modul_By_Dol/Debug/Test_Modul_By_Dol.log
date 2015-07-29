@@ -1,15 +1,20 @@
-﻿빌드 시작: 2015-07-29 오전 11:11:30
-     1>2 노드의 "C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
+﻿빌드 시작: 2015-07-29 오후 8:13:50
+     1>2 노드의 "F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include\\ /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include\\ /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Audio.cpp DirectX_Lib.cpp main.cpp
          main.cpp
+         DirectX_Lib.cpp
+         Audio.cpp
+         코드를 생성하고 있습니다...
+     1>f:\[5] source code\[1] visual studio\[4] 게임 개발\[4] fireballoon\fireballoon\source_code\test_modul_by_dol\audio.cpp(56): warning C4715: 'AudioExample::audio' : 모든 제어 경로에서 값을 반환하지는 않습니다.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\\Library\\Lib\\x86\\ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\Audio.obj
+         D:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\\Library\\Lib\\x86\\ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\Audio.obj
          Debug\DirectX_Lib.obj
          Debug\main.obj
-         Test_Modul_By_Dol.vcxproj -> C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe
-     1>"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+         LINK : F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+         Test_Modul_By_Dol.vcxproj -> F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe
+     1>"F:\[5] Source Code\[1] Visual Studio\[4] 게임 개발\[4] FireBalloon\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
 
 빌드했습니다.
 
-경과 시간: 00:00:01.27
+경과 시간: 00:00:04.45
