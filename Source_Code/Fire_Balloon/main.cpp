@@ -8,7 +8,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 {
 	DirectX_Lib dl;
 	dl.Initilize();
-
+	
 	MSG msg;
 	ZeroMemory( &msg, sizeof(msg) );
 	while( msg.message!=WM_QUIT )
