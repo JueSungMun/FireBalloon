@@ -18,21 +18,18 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="DirectX_Lib.cpp">
+    <ClCompile Include="Audio.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
+    <ClCompile Include="Graphic_Lib.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectX_Lib.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioLib.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Audio.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic_Lib.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="5684f3b6-e02f-40f7-a2a8-5e7104cbcef6" name="Fire_Balloon_ClassDiagram" linkedPackageId="8221ea06-693a-491f-a368-72efedd43e9b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="ca67c8b0-2836-41cf-91a4-a76605f3b38c">
+      <profileInstance Id="99ee3ec5-09b2-4c0c-a09c-5954148aeb1a" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="c2e74ed3-0485-4f72-b491-38463b5ff356">
+      <profileInstance Id="da3fd785-a32a-44db-a55d-861b083ac831" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="939ff80b-cecc-43ad-b4bb-a802d6f379c2" name="Graphic_Lib" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="717be9ae-e09f-42a4-8341-66f6c5ac4b56" />
+        <ownedAttributesInternal>
+          <property Id="77f83497-2c99-4490-b297-6cf43a78d43d" name="g_pD3D" visibility="Private" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="6383e2a0-846f-4298-b726-32bba4883ba4" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="6ec426dd-24e7-4e76-8159-a41c5bd59112" LastKnownName="LPDIRECT3D9" />
+            </type_NamedElement>
+          </property>
+          <property Id="2495881c-4d41-465b-8318-c4bba97491ad" name="g_pd3dDevice" visibility="Private" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="08956265-13ca-481b-9767-69464ee593a7" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="572e900b-126e-4ea0-8857-28edbdcd0050" LastKnownName="LPDIRECT3DDEVICE9" />
+            </type_NamedElement>
+          </property>
+          <property Id="51aa20fc-0809-42ee-b637-c5a54646d5d5" name="g_pSprite" visibility="Private" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="624fd136-c569-4e33-b109-36ef26e575d9" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="4cf59da3-539a-44f8-9081-c90b5e7aa302" LastKnownName="LPD3DXSPRITE" />
+            </type_NamedElement>
+          </property>
+          <property Id="efd46863-05eb-4ec8-af6c-ecd4a0af4bba" name="texture" visibility="Private" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="59cc1d74-7c82-465c-b010-e936f2fd21f8" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="19b0930b-5aa5-4d93-8431-65e8dfa29c8e" LastKnownName="LPDIRECT3DTEXTURE9" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="bb04df81-6c8d-431b-a01a-94f01077f11e" name="Initialize" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="68a08ee9-2fec-4386-bfa9-8da0e4b1646a" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="500f75db-bc80-48cd-afaf-a60c97c6f3ec" name="Windows" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="70549b99-405f-4459-ab50-62fbfe35611b" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="a967cf4b-47d3-46cd-96bf-182a0d426730" name="Button" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="2c5b7ba6-3027-4079-9adb-1ee03a82d2d2" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="a757b2bf-8dec-4995-8010-188d5bbb8383" name="Chracter" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="64df6441-4330-4231-9ee2-8963ad822d40" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="412735cc-e8a0-42b3-808e-4c1b006eeb45" name="Audio" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="54e10a0b-e16f-449c-93eb-83dccc2bf765" />
+        <ownedOperationsInternal>
+          <operation Id="0d9b3e32-38da-429a-9c76-cac73d62c96f" name="LoadtheMusic" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="c668e8d6-bb16-425f-98b3-2df74c432aa8" />
+          </operation>
+          <operation Id="ad897263-6d1f-423b-b9fe-577e9c4aebb9" name="Play" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="dc63ad8e-1dbe-42cf-8f65-b11b0842015f" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="6ec426dd-24e7-4e76-8159-a41c5bd59112" name="LPDIRECT3D9" isAbstract="false" isLeaf="false" cachedFullName="LPDIRECT3D9">
+        <elementDefinition Id="42776474-7c55-4471-a502-3fd6b109fc1e" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="572e900b-126e-4ea0-8857-28edbdcd0050" name="LPDIRECT3DDEVICE9" isAbstract="false" isLeaf="false" cachedFullName="LPDIRECT3DDEVICE9">
+        <elementDefinition Id="1409179e-63f5-4b20-9d75-1ddf3c3db9af" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="4cf59da3-539a-44f8-9081-c90b5e7aa302" name="LPD3DXSPRITE" isAbstract="false" isLeaf="false" cachedFullName="LPD3DXSPRITE">
+        <elementDefinition Id="6c73c4be-805f-41d6-b03e-79df31ab7d61" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="19b0930b-5aa5-4d93-8431-65e8dfa29c8e" name="LPDIRECT3DTEXTURE9" isAbstract="false" isLeaf="false" cachedFullName="LPDIRECT3DTEXTURE9">
+        <elementDefinition Id="c339b804-e6bc-4a41-b322-7cdcfc25585f" />
+      </referencedType>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="8221ea06-693a-491f-a368-72efedd43e9b" name="Fire_Balloon_Modeling">
+    <elementDefinition Id="88e9ae37-a3c4-4300-a89c-40830d19cde4" />
+  </package>
+</logicalClassDesignerModel>

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "DirectX_Lib.h"
+#include "Graphic_Lib.h"
 #define BACKGROUND_TEXTURE _T("..\\Resource\\main_screen_background.jpg")
 
 using namespace std;
@@ -13,9 +13,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 	LPCWSTR Class_Name = _T("Main Scene");
 	//Class_Name = _T("Next Scene");
 
-	DirectX_Lib dl;
+	Graphic_Lib dl;
 	dl.Initilize();
-	dl.LoadBackGroundData(BACKGROUND_TEXTURE);
+	dl.LoadTexture(BACKGROUND_TEXTURE);
 	dl.ShowTheWindow();
 	dl.LoadTheMusic();
 	MSG msg;
@@ -29,12 +29,11 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 		}
 		else
 		{
-			dl.Render();
+			dl.Draw();
 			dl.PlayTheMusic();
 		}
 		//dl.PlayTheMusic();
 	}
 	
-	UnregisterClass( _T("D3D Tutorial"), dl.GetValueGWC().hInstance );
     return 0; 
 }
