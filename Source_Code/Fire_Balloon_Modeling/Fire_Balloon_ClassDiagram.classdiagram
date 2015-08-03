@@ -1,19 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="5684f3b6-e02f-40f7-a2a8-5e7104cbcef6" name="Fire_Balloon_ClassDiagram" linkedPackageId="8221ea06-693a-491f-a368-72efedd43e9b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
-  <profileInstances>
-    <packageHasProfileInstances Id="ca67c8b0-2836-41cf-91a4-a76605f3b38c">
-      <profileInstance Id="99ee3ec5-09b2-4c0c-a09c-5954148aeb1a" name="StandardProfileL2">
-        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
-      </profileInstance>
-      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="c2e74ed3-0485-4f72-b491-38463b5ff356">
-      <profileInstance Id="da3fd785-a32a-44db-a55d-861b083ac831" name="StandardProfileL3">
-        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-      </profileInstance>
-      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
-    </packageHasProfileInstances>
-  </profileInstances>
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <class Id="939ff80b-cecc-43ad-b4bb-a802d6f379c2" name="Graphic_Lib" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -99,8 +85,42 @@
         <elementDefinition Id="c339b804-e6bc-4a41-b322-7cdcfc25585f" />
       </referencedType>
     </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="597a97c3-c347-4f85-a284-a9013284610f" name="Manage_Scene" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="26e42c9d-a7b2-452e-a009-1e78436c62a8" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="8299dae0-ff84-48a3-ac74-3cab4a03a31b" name="Main_Scene" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="a4a906ec-df52-4d91-966f-422a29e5c4f8" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="ce4e7e7c-6b63-4929-a713-145d3119417a" name="Game_Scene" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="1ce0c338-a9f5-4909-acdc-e49e83b1d959" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="c786ed6b-4f0d-4f23-87bd-bc4a3484ca1d" name="Finish_Scene" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="69cdfc1f-e576-4c8c-ae2b-296806d85729" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
   </packagedElements>
   <package Id="8221ea06-693a-491f-a368-72efedd43e9b" name="Fire_Balloon_Modeling">
     <elementDefinition Id="88e9ae37-a3c4-4300-a89c-40830d19cde4" />
+    <profileInstances>
+      <packageHasProfileInstances Id="ca67c8b0-2836-41cf-91a4-a76605f3b38c">
+        <profileInstance Id="99ee3ec5-09b2-4c0c-a09c-5954148aeb1a" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="c2e74ed3-0485-4f72-b491-38463b5ff356">
+        <profileInstance Id="da3fd785-a32a-44db-a55d-861b083ac831" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+    </profileInstances>
   </package>
 </logicalClassDesignerModel>

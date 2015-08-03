@@ -185,6 +185,38 @@
         Id="c339b804-e6bc-4a41-b322-7cdcfc25585f"
         name="LPDIRECT3DTEXTURE9" />
     </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="26e42c9d-a7b2-452e-a009-1e78436c62a8"
+        name="Manage_Scene"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a4a906ec-df52-4d91-966f-422a29e5c4f8"
+        name="Main_Scene"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="1ce0c338-a9f5-4909-acdc-e49e83b1d959"
+        name="Game_Scene"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="69cdfc1f-e576-4c8c-ae2b-296806d85729"
+        name="Finish_Scene"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
   </packagedElements>
   <primitiveType
     Id="220a3521-e091-4221-bae9-3ef9018e845c"

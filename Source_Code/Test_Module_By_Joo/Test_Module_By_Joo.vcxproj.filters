@@ -24,12 +24,18 @@
     <ClCompile Include="Graphic_Lib.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Graphic_Lib.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
