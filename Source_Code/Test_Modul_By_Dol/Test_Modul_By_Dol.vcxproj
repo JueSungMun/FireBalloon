@@ -10,6 +10,9 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{427DC98C-A417-4891-85AC-396D11389669}</ProjectGuid>
     <RootNamespace>Test_Modul_By_Dol</RootNamespace>
@@ -43,11 +46,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\\Library\\Include\\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Library\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\\Library\\Lib\\x86\\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Library\Lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -63,15 +66,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="DirectX_Lib.cpp" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="DirectX_Lib.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
