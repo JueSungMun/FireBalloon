@@ -3,7 +3,6 @@
 
 */
 
-
 #include "Manage_Scene.h"
 
 class Main_Scene : public Manage_Scene

@@ -78,12 +78,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Graphic_Lib.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Scene.cpp" />
     <ClCompile Include="Manage_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Graphic_Lib.h" />
     <ClInclude Include="Main_Scene.h" />
     <ClInclude Include="Manage_Scene.h" />

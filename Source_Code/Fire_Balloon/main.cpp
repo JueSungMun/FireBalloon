@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		MSG msg;
 		obj = new Main_Scene();
 		obj->Initialize(hWnd);
-
+	
 		while(true)
 		{
 			while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -128,6 +128,7 @@ bool InitializeInput()
 	}
 	return true;
 }
+
 /*
 void SelectScene()
 {

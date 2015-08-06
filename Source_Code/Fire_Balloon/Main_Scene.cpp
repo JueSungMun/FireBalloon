@@ -1,6 +1,5 @@
 #include "Main_Scene.h"
 
-
 Main_Scene::Main_Scene() : spriter(NULL), texture(NULL)
 { 
 	position.x=0;
@@ -45,6 +44,7 @@ void Main_Scene::Initialize(HWND hWnd)
 		{
 			MessageBox(NULL,_T("Error on generating spriter"),NULL,NULL);
 		}
+
 	}
 	else
 	{
