@@ -6,9 +6,8 @@
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
 
-#define IMG_FIREBALLOON "..\\Resource\\bird_test\\bird1.jpeg"
-#define IMG_BIRD "..\\Resource\\bird_test\\bird1.jpeg"
-#define IMG_ITEM "..\\Resource\\bird_test\\bird1.jpeg"
+#define IMG_FIREBALLOON "..\\Resource\\bird_test\\fireballoon_t.png"
+#define IMG_BIRD "..\\Resource\\bird_test\\bird_t.png"
 #define IMG_BG "..\\Resource\\bird_test\\background.png"
 
 #define SCREEN_WIDTH 600
@@ -27,10 +26,6 @@ D3DXVECTOR3 vecPosition;
 D3DXVECTOR3 vecPosBullet;
 D3DXVECTOR3 vecPosBG;
 
-RECT rct;
-int offsetx =0;
-int offsety =0;
-
 struct Image 
 {
 	BOOL Visible;
@@ -40,7 +35,6 @@ struct Image
 	D3DXVECTOR3 Center;
 };
 
-Image g_Bullet[100];
 Image g_Enemy;
 INT g_EnemyGage = 200;
 
@@ -66,23 +60,13 @@ void InitDX(void)
 	InitD3D(g_hWnd);
 	D3DXCreateSprite(g_pd3dDevice, &g_pSprite);
 
-	vecPosition.x = 300.0f;
-	vecPosition.y = 450.0f;
+	vecPosition.x = SCREEN_WIDTH/2;
+	vecPosition.y = SCREEN_HEIGHT/8;
 	vecPosition.z = .0f;
-
-	vecPosBullet.x = .0f;
-	vecPosBullet.y = .0f;
-	vecPosBullet.z = .0f;
 
 	vecPosBG.x = .0f;
 	vecPosBG.y = .0f;
 	vecPosBG.z = .0f;
-
-	ZeroMemory(&g_Bullet, sizeof(g_Bullet));
-	g_Bullet[0].Source.left = 0;
-	g_Bullet[0].Source.top = 0;
-	g_Bullet[0].Source.right = 81;
-	g_Bullet[0].Source.bottom = 56;
 
 	// 적 이미지 초기화
 	ZeroMemory(&g_Enemy, sizeof(g_Enemy));
@@ -92,8 +76,8 @@ void InitDX(void)
 	g_Enemy.Source.bottom = 56;
 	g_Enemy.Visible = TRUE;
 
-	g_Enemy.Position.x = 150.0f;
-	g_Enemy.Position.y = 10.0f;
+	g_Enemy.Position.x = 1;
+	g_Enemy.Position.y = 0;
 
 	//배경이미지
 	
@@ -101,19 +85,12 @@ void InitDX(void)
 
 void LoadData(void)
 {
-	D3DXCreateTextureFromFileEx(g_pd3dDevice, IMG_FIREBALLOON,D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	D3DXCreateTextureFromFileEx(g_pd3dDevice, IMG_FIREBALLOON,
+		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_pTexture);
-	D3DXCreateTextureFromFileEx(g_pd3dDevice, IMG_ITEM,D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_Bullet[0].Texture);
-	D3DXCreateTextureFromFileEx(g_pd3dDevice, IMG_BG,D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	D3DXCreateTextureFromFileEx(g_pd3dDevice, IMG_BG,
+		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_pBackground);
-	
-	for (INT i=1; i<100; ++i)
-	{
-		g_Bullet[i].Texture = g_Bullet[0].Texture;
-		g_Bullet[i].Source = g_Bullet[0].Source;
-	}
-
 	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_BIRD, 
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_Enemy.Texture); 
@@ -177,19 +154,17 @@ VOID Render()
 	D3DXVECTOR3 vecCenter;
 	//D3DXVECTOR3 vecPosition;
 
+	static bool bird_direction = true;
+	static int offset =1;
+
 	rcSrcRect.left = 0;
 	rcSrcRect.top = 0;
-	rcSrcRect.right = 81;
-	rcSrcRect.bottom = 56;
+	rcSrcRect.right = 59;
+	rcSrcRect.bottom = 88;
 
 	vecCenter.x = .0f;
 	vecCenter.y = .0f;
 	vecCenter.z = .0f;
-
-	bgRect.top=0;
-	bgRect.left=0;
-	bgRect.right=SCREEN_WIDTH;
-	bgRect.bottom=SCREEN_HEIGHT;
 
 	//RECT rcSrcBullet;
 	//rcSrcBullet.left = 0;
@@ -202,8 +177,20 @@ VOID Render()
 	//vecPosition.z = .0f;
 
 	//새의 움직임 제어
-	g_Enemy.Position.x += 1.0f;
-	g_Enemy.Position.y = 50*sin(g_Enemy.Position.x*0.03)+100;
+	
+	if(bird_direction){
+		g_Enemy.Position.x += 2.0f;
+		g_Enemy.Position.y = 50*cos(g_Enemy.Position.x*0.03)+500;
+		if(g_Enemy.Position.x >= SCREEN_WIDTH)
+			bird_direction = false;
+	}
+	else
+	{
+		g_Enemy.Position.x -= 3.0f;
+		g_Enemy.Position.y = 50*cos(g_Enemy.Position.x*0.09)+500;
+		if(g_Enemy.Position.x <= 0)
+			bird_direction = true;
+	}
 
 	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 10.0f;
 
@@ -214,33 +201,23 @@ VOID Render()
 	if (GetKeyState(VK_DOWN) & 0x80000000) 	vecPosition.y += 10.0f;
 	
 	// 충돌체크
-	for (INT i=0; i<100; ++i)
+	// 보이는 적중에
+	if ( g_Enemy.Visible == TRUE )
 	{
-		// 보이는 총알 중에
-		if ( g_Bullet[i].Visible == TRUE )
+		// 충돌 되었으면
+		if ( vecPosition.x < g_Enemy.Position.x + g_Enemy.Source.right
+			&&g_Enemy.Position.x < vecPosition.x + rcSrcRect.right
+			&&vecPosition.y < g_Enemy.Position.y + g_Enemy.Source.bottom
+			&&g_Enemy.Position.y < vecPosition.y + rcSrcRect.bottom
+			)
 		{
-
-			// 충돌 되었으면
-			if ( g_Bullet[i].Position.x < g_Enemy.Position.x + g_Enemy.Source.right
-				&&g_Enemy.Position.x < g_Bullet[i].Position.x + g_Bullet[i].Source.right
-				&&g_Bullet[i].Position.y < g_Enemy.Position.y + g_Enemy.Source.bottom
-				&&g_Enemy.Position.y < g_Bullet[i].Position.y + g_Bullet[i].Source.bottom
-				)
-			{
-				// 충돌한 총알은 안보이고, 게이지 깍기
-				if ( g_EnemyGage >= 0 )
-				{
-					g_Bullet[i].Visible = FALSE;
-					g_EnemyGage--;
-				}
-			}
+			// 상대방 파괴
+			g_Enemy.Visible = FALSE;
 		}
 	}
-
-	// 적의 게이지가 0보다 작으면 안보이기
-	if ( g_EnemyGage <= 0 )	g_Enemy.Visible = FALSE;
-
-	if (GetKeyState(0x5a) & 0x80000000) 
+	
+	//총알발사
+	/*if (GetKeyState(0x5a) & 0x80000000) 
 	{
 		for (INT i=0; i<100; ++i)
 		{
@@ -252,14 +229,16 @@ VOID Render()
 				break;
 			}
 		}
-	}
+	}*/
 
-	for (INT i=0; i<100; ++i)
+
+	//총알속도
+	/*for (INT i=0; i<100; ++i)
 	{
 		if ( g_Bullet[i].Visible == TRUE )	g_Bullet[i].Position.y -= 20.0f;
 
 		if ( g_Bullet[i].Position.y < -40.0f )	g_Bullet[i].Visible = FALSE;	
-	}
+	}*/
 
 	//if ( vecPosBullet.y > -40.0f )
 	//{
@@ -275,18 +254,38 @@ VOID Render()
 		g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
 		//g_pSprite->Draw(g_pBullet, &rcSrcBullet, &vecCenter, &vecPosBullet, 0xffffffff);
 
+
+		//배경그리기
+		//top sprite
+		bgRect.left=0;
+		bgRect.right=600;
+
+		bgRect.top=900-offset;
+		bgRect.bottom=900;
+
 		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
+
+		//bottom
+		bgRect.top=0;
+		bgRect.bottom=SCREEN_HEIGHT-offset;
+
+		D3DXVECTOR3 vecPosBG2(0,offset,0);
+		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
+
+		offset++;
+
 
 		if ( g_Enemy.Visible == TRUE )
 			g_pSprite->Draw( g_Enemy.Texture, &g_Enemy.Source, &g_Enemy.Center, &g_Enemy.Position, 0xffffffff );
 
-		for ( INT i=0; i<100; ++i )
+		//총알그려줌
+		/*for ( INT i=0; i<100; ++i )
 		{
 			if ( g_Bullet[i].Visible == TRUE )
 			{
 				g_pSprite->Draw(g_Bullet[i].Texture, &g_Bullet[i].Source, &g_Bullet[i].Center, &g_Bullet[i].Position, 0xffffffff);
 			}
-		}
+		}*/
 
 		g_pSprite->Draw(g_pTexture, &rcSrcRect, &vecCenter, &vecPosition, 0xffffffff);
 		g_pSprite->End();
@@ -315,9 +314,6 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 
     return DefWindowProc( hWnd, msg, wParam, lParam );
 }
-
-
-
 
 //-----------------------------------------------------------------------------
 // Name: WinMain()

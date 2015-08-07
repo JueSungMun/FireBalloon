@@ -1,10 +1,11 @@
-﻿빌드 시작: 2015-08-06 오후 5:28:19
+﻿빌드 시작: 2015-08-07 오후 5:31:06
      1>2 노드의 "C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Library\Include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\jue\documents\visual studio 2012\projects\fireballoon\source_code\test_modul_by_dol\main.cpp(207): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>c:\users\jue\documents\visual studio 2012\projects\fireballoon\source_code\test_modul_by_dol\main.cpp(212): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>c:\users\jue\documents\visual studio 2012\projects\fireballoon\source_code\test_modul_by_dol\main.cpp(183): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>c:\users\jue\documents\visual studio 2012\projects\fireballoon\source_code\test_modul_by_dol\main.cpp(190): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>c:\users\jue\documents\visual studio 2012\projects\fireballoon\source_code\test_modul_by_dol\main.cpp(272): warning C4244: '인수' : 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
        Link:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Library\Lib\x86" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\main.obj
          Test_Modul_By_Dol.vcxproj -> C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe
@@ -12,4 +13,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:03.26
+경과 시간: 00:00:03.17

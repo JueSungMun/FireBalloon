@@ -13,6 +13,7 @@ private:
 	LPD3DXSPRITE spriter;
 	LPDIRECT3DTEXTURE9 texture;
 	LPCWSTR background;
+	RECT button;
 public:
 	Main_Scene();
 	Main_Scene(int windth, int height);

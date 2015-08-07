@@ -7,7 +7,10 @@ Main_Scene::Main_Scene() : spriter(NULL), texture(NULL)
 	position.z=0;
 
 	color = D3DCOLOR_ARGB(255,255,255,255);
-
+	button.left = 100;
+	button.top = 100;
+	button.right = 300;
+	button.bottom = 300;
 	background = _T("..\\Resource\\main_screen_background.jpg");
 	SetSceneNumber(1);
 }
@@ -78,6 +81,7 @@ void Main_Scene::Draw(float gameTime)
 	{
 		spriter->Begin(D3DXSPRITE_ALPHABLEND);
 		spriter->Draw(texture,&rcSrcRect,NULL, &position, color);
+		//spriter->Draw(NULL, &button, NULL, NULL, D3DCOLOR_ARGB(255,0,255,0));
 		spriter->End();
 	}
 
