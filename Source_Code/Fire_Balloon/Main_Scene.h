@@ -4,6 +4,7 @@
 */
 
 #include "Manage_Scene.h"
+#include "Button.h"
 
 class Main_Scene : public Manage_Scene
 {
@@ -13,7 +14,7 @@ private:
 	LPD3DXSPRITE spriter;
 	LPDIRECT3DTEXTURE9 texture;
 	LPCWSTR background;
-	RECT button;
+	Button* button;
 public:
 	Main_Scene();
 	Main_Scene(int windth, int height);

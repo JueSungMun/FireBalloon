@@ -1,4 +1,4 @@
-﻿빌드 시작: 2015-08-07 오전 12:27:15
+﻿빌드 시작: 2015-08-08 오전 2:22:26
      1>2 노드의 "C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Fire_Balloon\Fire_Balloon.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include\\ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Main_Scene.cpp
@@ -14,4 +14,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:05.71
+경과 시간: 00:00:04.64

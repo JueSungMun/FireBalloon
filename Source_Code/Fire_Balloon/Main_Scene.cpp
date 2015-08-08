@@ -7,12 +7,9 @@ Main_Scene::Main_Scene() : spriter(NULL), texture(NULL)
 	position.z=0;
 
 	color = D3DCOLOR_ARGB(255,255,255,255);
-	button.left = 100;
-	button.top = 100;
-	button.right = 300;
-	button.bottom = 300;
 	background = _T("..\\Resource\\main_screen_background.jpg");
 	SetSceneNumber(1);
+	button = new Button(300,300,142,92);
 }
 
 Main_Scene::Main_Scene(int width, int height)
@@ -48,6 +45,11 @@ void Main_Scene::Initialize(HWND hWnd)
 			MessageBox(NULL,_T("Error on generating spriter"),NULL,NULL);
 		}
 
+		if (!SUCCEEDED(button->Initialize(gDevice->g_pd3dDevice, _T("..\\Resource\\confirm_button1.png"))))
+		{
+			MessageBox(NULL,_T("Load Error of Button texture"),NULL,NULL);
+		}
+
 	}
 	else
 	{
@@ -61,6 +63,11 @@ void Main_Scene::Initialize(HWND hWnd)
 		if (!SUCCEEDED(D3DXCreateSprite(gDevice->g_pd3dDevice, &spriter)))
 		{
 			MessageBox(NULL,_T("Error on generating spriter"),NULL,NULL);
+		}
+		
+		if (!SUCCEEDED(button->Initialize(gDevice->g_pd3dDevice, _T("..\\Resource\\confirm_button1.png"))))
+		{
+			MessageBox(NULL,_T("Load Error of Button texture"),NULL,NULL);
 		}
 	}
 }
@@ -83,6 +90,11 @@ void Main_Scene::Draw(float gameTime)
 		spriter->Draw(texture,&rcSrcRect,NULL, &position, color);
 		//spriter->Draw(NULL, &button, NULL, NULL, D3DCOLOR_ARGB(255,0,255,0));
 		spriter->End();
+	}
+
+	if(button->IsInitialized())
+	{
+		button->Draw();
 	}
 
 	gDevice->End();

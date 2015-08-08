@@ -1,4 +1,5 @@
 #include <d3dx9.h>
+//#include <tchar.h>
 
 class Button
 {
@@ -6,7 +7,7 @@ private:
 	RECT button;
 	LPDIRECT3DTEXTURE9 texture;
 	LPD3DXSPRITE sprite;
-
+	//LPCWSTR file;
 	D3DXVECTOR3 position;
 	D3DCOLOR color;
 	bool initialized;
