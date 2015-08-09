@@ -6,18 +6,20 @@ bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int wi
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 Manage_Scene* obj;
-
 bool InitializeInput();
+HINSTANCE g_hInst;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HWND hWnd;
+	g_hInst = hInstance;
+
 	if(GenerateWindow(_T("Fire_Balloon"), _T("Fire_Ballon Program"), 600, 600,hWnd) && InitializeInput())
 	{
 		MSG msg;
 		obj = new Main_Scene();
 		obj->Initialize(hWnd);
-	
+						obj->Draw(0.0f);
 		while(true)
 		{
 			while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -28,7 +30,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if(msg.message == WM_QUIT) break;
 			else
 			{
-				obj->Draw(0.0f);
+
 			}
 		}
 		return msg.wParam;
@@ -50,7 +52,7 @@ bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int wi
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = WindowProc;
-	wcex.hInstance = GetModuleHandle(NULL);
+	wcex.hInstance = g_hInst;//GetModuleHandle(NULL);
 	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)COLOR_WINDOW;
@@ -66,20 +68,30 @@ bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int wi
 		NULL, NULL, wcex.hInstance, NULL );
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
-
 	return true;
 	
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	HDC hdc;
+	PAINTSTRUCT ps;
+
 	switch(message)
 	{
+		case WM_CREATE:
+			CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+				0,0,100,25,hWnd,(HMENU)0,g_hInst,NULL);
+			return 0;
+			break;
 		case WM_DESTROY : 
-		{
 			PostQuitMessage(0);
 			return 0;
-		} break;
+			break;
+		case WM_PAINT :
+			hdc = BeginPaint(hWnd, &ps);
+			EndPaint(hWnd, &ps);
+			break;
 		case WM_INPUT : 
 		{
 			UINT dwSize;

@@ -29,7 +29,7 @@ public:
 	void BeforeScene();
 	//virtual void Draw() = 0;
 
-	virtual void Initialize(HWND hWnd);
+	virtual void Initialize(HWND& hWnd);
 	bool Initialized();
 	void Run();
 	void Update(float gameTime);

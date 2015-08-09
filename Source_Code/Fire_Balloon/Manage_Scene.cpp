@@ -34,7 +34,7 @@ void Manage_Scene::NextScene()
 	sceneNumber++;
 }
 
-void Manage_Scene::Initialize(HWND hWnd)
+void Manage_Scene::Initialize(HWND& hWnd)
 {
 	gDevice = new Graphic_Lib();
 	

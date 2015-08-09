@@ -12,6 +12,8 @@ private:
 	D3DXVECTOR3 position;
 	D3DCOLOR color;
 	LPD3DXSPRITE spriter;
+	LPD3DXFONT pFont;
+	HWND hEditWND;
 	LPDIRECT3DTEXTURE9 texture;
 	LPCWSTR background;
 	Button* button;
@@ -19,6 +21,6 @@ public:
 	Main_Scene();
 	Main_Scene(int windth, int height);
 	~Main_Scene();
-	void Initialize(HWND hWnd);
+	void Initialize(HWND& hWnd);
 	void Draw(float gameTime);
 };
