@@ -12,6 +12,9 @@
 #define MANAGE_SCENE_H
 #include "Graphic_Lib.h"
 
+#define BUTTON_ID 0
+#define EDITBTN_ID 100
+
 class Manage_Scene
 {
 private:
@@ -22,18 +25,18 @@ public:
 	enum SCENE {TEMP_SCENE, MAIN_SCENE, GAME_SCENE, END_SCENE};
 	Graphic_Lib *gDevice;
 	Manage_Scene();
-	~Manage_Scene();
+	virtual ~Manage_Scene();
 	int GetSceneNumber();
 	void SetSceneNumber(int num);
 	void NextScene();
 	void BeforeScene();
 	//virtual void Draw() = 0;
-
 	virtual void Initialize(HWND& hWnd);
 	bool Initialized();
 	void Run();
 	void Update(float gameTime);
 	virtual void Draw(float gameTime);
+	virtual LPCWSTR GetEditWindowText();							//Main_Scene에서 EditBox의 문자열을 받기위한 함수
 };
 
 #endif

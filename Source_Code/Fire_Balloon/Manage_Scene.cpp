@@ -75,3 +75,9 @@ bool Manage_Scene::Initialized()
 {
 	return isInitialed;
 }
+
+LPCWSTR Manage_Scene::GetEditWindowText()
+{
+	LPCWSTR temp = _T("");
+	return temp;
+}

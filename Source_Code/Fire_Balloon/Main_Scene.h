@@ -5,18 +5,19 @@
 
 #include "Manage_Scene.h"
 #include "Button.h"
+#include <atlbase.h>
 
 class Main_Scene : public Manage_Scene
 {
 private:
 	int windowWidth;
 	int windowHeight;
+	HWND btnWnd;
+	HWND hEditWnd;
 	D3DXVECTOR3 position;
 	D3DCOLOR color;
 	LPD3DXSPRITE spriter;
 	LPD3DXFONT pFont;
-	HWND btnWND;
-	HWND hEditWND;
 	LPDIRECT3DTEXTURE9 texture;
 	LPCWSTR background;
 	Button* button;
@@ -26,6 +27,5 @@ public:
 	~Main_Scene();
 	void Initialize(HWND& hWnd);
 	void Draw(float gameTime);
-	bool GenerateButton(int x, int y, int width, int height);
-	LRESULT CALLBACK ButtonProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	LPCWSTR GetEditWindowText();
 };

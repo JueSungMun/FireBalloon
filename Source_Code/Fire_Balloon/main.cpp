@@ -1,10 +1,11 @@
 #include <Windows.h>
 #include "Main_Scene.h"
+#include "GameExplainScene.h"
 
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int width, int height, HWND& hWnd);
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int width, int height, HWND& hWnd);
-
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+WNDCLASSEX wcex;
 Manage_Scene* obj;
 bool InitializeInput();
 
@@ -34,6 +35,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		return msg.wParam;
 	}
+	UnregisterClass(_T("Fire_Balloon"), wcex.hInstance);
+	delete obj;
 	return 0;
 }
 
@@ -45,8 +48,6 @@ bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int width, int heigh
 
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int width, int height, HWND& hWnd)
 {
-	WNDCLASSEX wcex;
-
 	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -88,6 +89,23 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		case WM_PAINT :
 			hdc = BeginPaint(hWnd, &ps);
 			EndPaint(hWnd, &ps);
+			return 0;
+			break;
+		case WM_COMMAND : 
+			switch(LOWORD(wParam))
+			{
+			case BUTTON_ID:
+				if(!_tcscmp(obj->GetEditWindowText(),_T("")))
+					MessageBox(hWnd, _T("닉네임을 입력해주세요"), _T("Button"), MB_OK);
+				else
+				{
+					delete obj;
+					obj = new GameExplainScene();
+					obj->Initialize(hWnd);
+					obj->Draw(0.0f);
+				}
+				break;
+			}
 			break;
 		case WM_INPUT : 
 		{
@@ -111,8 +129,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					if(raw->data.keyboard.VKey ==VK_SPACE)
 					{
 						MessageBox(NULL, _T("Space key was pressed"), NULL, NULL);
+						delete obj;
 						obj = new Manage_Scene();
 						obj->Initialize(hWnd);
+						obj->Draw(0.0f);
 					}
 				}
 			}

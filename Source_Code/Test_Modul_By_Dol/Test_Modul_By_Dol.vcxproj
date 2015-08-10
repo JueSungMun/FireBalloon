@@ -46,11 +46,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Library\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\Library\\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Library\Lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\\Library\\Lib\\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

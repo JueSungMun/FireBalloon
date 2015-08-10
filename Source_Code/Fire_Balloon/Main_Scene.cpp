@@ -34,6 +34,8 @@ Main_Scene::~Main_Scene()
 		pFont->Release();
 		pFont = 0;
 	}
+	DestroyWindow(btnWnd);
+	DestroyWindow(hEditWnd);
 }
 
 void Main_Scene::Initialize(HWND& hWnd)
@@ -43,7 +45,8 @@ void Main_Scene::Initialize(HWND& hWnd)
 		Manage_Scene::Initialize(hWnd);
 	}
 	
-	if (!SUCCEEDED(D3DXCreateTextureFromFile(gDevice->g_pd3dDevice, background, &texture)))
+	if (!SUCCEEDED(D3DXCreateTextureFromFileEx(gDevice->g_pd3dDevice, background, windowWidth, windowHeight, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &texture)))
 	{
 		MessageBox(NULL,_T("Image Load error"),NULL,NULL);
 	}
@@ -64,48 +67,20 @@ void Main_Scene::Initialize(HWND& hWnd)
 		MessageBox(NULL, _T("Load Error of Font from the System"), NULL, NULL);
 	}
 
-	if (!SUCCEEDED(CreateWindow(_T("edit"), _T("EditBox"), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 0,
-		400, 200, 25, hWnd, (HMENU) 100, NULL, NULL)))
+	if (!SUCCEEDED(hEditWnd = CreateWindow(_T("edit"), _T(""), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 0,
+		400, 200, 25, hWnd, (HMENU) EDITBTN_ID, NULL, NULL)))
 	{
 		MessageBox(NULL, _T("Generation error of Edit Box"), NULL, NULL);
 	}
 
-	/*
-	if (!SUCCEEDED(btnWND = CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0,400,100,25,hWnd,(HMENU)0,NULL,NULL)))
+	
+	if (!SUCCEEDED(btnWnd = CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 200,200,100,25,hWnd,(HMENU)BUTTON_ID,NULL,NULL)))
 	{
 		MessageBox(NULL, _T("Generation error of Button"), NULL, NULL);
 	}
-	*/
+	
 }
 
-bool Main_Scene::GenerateButton(int x, int y, int width, int height)
-{
-	/*
-	WNDCLASSEX wcex;
-
-	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
-	wcex.cbSize = sizeof(wcex);
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = ButtonProc;
-	wcex.hInstance = GetModuleHandle(NULL);
-	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wcex.lpszClassName = className;
-	wcex.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
-
-	if(!RegisterClassEx(&wcex))
-	{
-		return false;
-	}
-
-	hWnd = CreateWindow(className, windowTitle, WS_OVERLAPPEDWINDOW, x, y, width, height,
-		NULL, NULL, wcex.hInstance, NULL );
-
-	ShowWindow(hWnd, SW_SHOWDEFAULT);
-	return true;
-	*/
-}
 
 void Main_Scene::Draw(float gameTime)
 {
@@ -127,16 +102,23 @@ void Main_Scene::Draw(float gameTime)
 		spriter->Draw(texture,&rcSrcRect,NULL, &position, color);
 		//spriter->Draw(NULL, &button, NULL, NULL, D3DCOLOR_ARGB(255,0,255,0));
 		if(pFont)
-			pFont->DrawText(spriter, _T("Test"), -1, &textRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+			pFont->DrawText(spriter, _T("´Ð³×ÀÓ"), -1, &textRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
 		spriter->End();
 	}
 
 	if(button->IsInitialized())
 	{
-		button->Draw();
+		//button->Draw();
 	}
 
 	gDevice->End();
 	gDevice->Present();
 	
+}
+
+LPCWSTR Main_Scene::GetEditWindowText()
+{
+	LPWSTR str = new WCHAR[128];
+	GetWindowText(hEditWnd, str, 128);
+	return (LPCWSTR)str;
 }
