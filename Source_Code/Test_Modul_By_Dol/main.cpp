@@ -2,6 +2,8 @@
 #include <d3dx9.h>
 #pragma warning( disable : 4996 ) // disable deprecated warning 
 #include <strsafe.h>
+#include <time.h>
+#include <string>
 #pragma warning( default : 4996 ) 
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
@@ -9,7 +11,7 @@
 #define IMG_FIREBALLOON "..\\Resource\\bird_test\\fireballoon_t.png"
 #define IMG_BIRD "..\\Resource\\bird_test\\bird_t.png"
 #define IMG_BG "..\\Resource\\bird_test\\background.png"
-
+#define IMG_GOALLINE "..\\Resource\\Goal_line.png"	
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 700
 
@@ -26,6 +28,8 @@ D3DXVECTOR3 vecPosition;
 D3DXVECTOR3 vecPosBullet;
 D3DXVECTOR3 vecPosBG;
 
+time_t startTime, goaltime;
+
 struct Image 
 {
 	BOOL Visible;
@@ -36,8 +40,8 @@ struct Image
 };
 
 Image g_Enemy;
+Image g_GoalLine;
 INT g_EnemyGage = 200;
-
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 HRESULT InitD3D( HWND hWnd );
 
@@ -79,8 +83,18 @@ void InitDX(void)
 	g_Enemy.Position.x = 1;
 	g_Enemy.Position.y = 0;
 
-	//배경이미지
-	
+	// 골라인 초기화
+	ZeroMemory(&g_GoalLine, sizeof(g_GoalLine));
+	g_GoalLine.Source.left=0;
+	g_GoalLine.Source.top=0;
+	g_GoalLine.Source.right = 600;
+	g_GoalLine.Source.bottom = 40;
+	g_GoalLine.Visible = TRUE;
+	g_GoalLine.Position.x = 0;
+	g_GoalLine.Position.y = 700;
+
+	time(&startTime);
+	goaltime = startTime+10;
 }
 
 void LoadData(void)
@@ -94,6 +108,9 @@ void LoadData(void)
 	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_BIRD, 
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_Enemy.Texture); 
+	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_GOALLINE, 
+		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_GoalLine.Texture); 
 }
 
 void Initilize(void)
@@ -114,7 +131,6 @@ void Initilize(void)
 HRESULT InitD3D( HWND hWnd )
 {
 	g_pD3D = Direct3DCreate9( D3D_SDK_VERSION );
-
     D3DPRESENT_PARAMETERS d3dpp;
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
     d3dpp.Windowed = TRUE;
@@ -135,10 +151,8 @@ VOID Cleanup()
 {
 	if ( g_pSprite != NULL)
 		g_pSprite->Release();
-
 	if( g_pd3dDevice != NULL ) 
 		g_pd3dDevice->Release();
-
 	if( g_pD3D != NULL )       
 		g_pD3D->Release();
 }
@@ -180,26 +194,25 @@ VOID Render()
 	
 	if(bird_direction){
 		g_Enemy.Position.x += 2.0f;
-		g_Enemy.Position.y = 50*cos(g_Enemy.Position.x*0.03)+500;
+		g_Enemy.Position.y = (float)(50*cos(g_Enemy.Position.x*0.03)+500);
 		if(g_Enemy.Position.x >= SCREEN_WIDTH)
 			bird_direction = false;
 	}
 	else
 	{
 		g_Enemy.Position.x -= 3.0f;
-		g_Enemy.Position.y = 50*cos(g_Enemy.Position.x*0.09)+500;
+		g_Enemy.Position.y = (float)(50*cos(g_Enemy.Position.x*0.09)+500);
 		if(g_Enemy.Position.x <= 0)
 			bird_direction = true;
 	}
 
 	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 10.0f;
-
 	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 10.0f;
-	
 	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 10.0f;
-
 	if (GetKeyState(VK_DOWN) & 0x80000000) 	vecPosition.y += 10.0f;
 	
+	
+
 	// 충돌체크
 	// 보이는 적중에
 	if ( g_Enemy.Visible == TRUE )
@@ -215,7 +228,6 @@ VOID Render()
 			g_Enemy.Visible = FALSE;
 		}
 	}
-	
 	//총알발사
 	/*if (GetKeyState(0x5a) & 0x80000000) 
 	{
@@ -254,7 +266,6 @@ VOID Render()
 		g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
 		//g_pSprite->Draw(g_pBullet, &rcSrcBullet, &vecCenter, &vecPosBullet, 0xffffffff);
 
-
 		//배경그리기
 		//top sprite
 		bgRect.left=0;
@@ -262,22 +273,38 @@ VOID Render()
 
 		bgRect.top=900-offset;
 		bgRect.bottom=900;
-
 		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
 
-		//bottom
+		//bottom sprite
 		bgRect.top=0;
 		bgRect.bottom=SCREEN_HEIGHT-offset;
-
-		D3DXVECTOR3 vecPosBG2(0,offset,0);
+		D3DXVECTOR3 vecPosBG2(0,(float)offset,0);
 		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
-
-		offset++;
-
+		offset--;
 
 		if ( g_Enemy.Visible == TRUE )
 			g_pSprite->Draw( g_Enemy.Texture, &g_Enemy.Source, &g_Enemy.Center, &g_Enemy.Position, 0xffffffff );
 
+
+		//시작하고 10초뒤에 골라인 올라옴
+		time_t crtTime;
+		time(&crtTime);
+		if(goaltime < crtTime)
+		{
+			g_GoalLine.Position.y -= 3.0f;
+			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
+		}
+
+		if ( g_Enemy.Visible == TRUE )
+	{
+		// 충돌 되었으면
+		if ( g_GoalLine.Position.y < vecPosition.y)
+		{
+			// 상대방 파괴
+			MessageBox(g_hWnd, "끝", MB_OK, 0);
+			exit(0);
+		}
+	}
 		//총알그려줌
 		/*for ( INT i=0; i<100; ++i )
 		{

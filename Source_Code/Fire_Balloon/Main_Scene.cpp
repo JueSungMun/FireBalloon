@@ -1,6 +1,6 @@
 #include "Main_Scene.h"
 
-Main_Scene::Main_Scene() : spriter(NULL), texture(NULL), pFont(NULL)
+Main_Scene::Main_Scene() : spriter(NULL), texture(NULL), pFont(NULL), windowWidth(600), windowHeight(700)
 { 
 	position.x=0;
 	position.y=0;
@@ -9,7 +9,7 @@ Main_Scene::Main_Scene() : spriter(NULL), texture(NULL), pFont(NULL)
 	color = D3DCOLOR_ARGB(255,255,255,255);
 	background = _T("..\\Resource\\main_screen_background.jpg");
 	SetSceneNumber(1);
-	button = new Button(300,300,142,92);
+	button = new Button(0,0,142,92);
 }
 
 Main_Scene::Main_Scene(int width, int height)
@@ -64,76 +64,46 @@ void Main_Scene::Initialize(HWND& hWnd)
 		MessageBox(NULL, _T("Load Error of Font from the System"), NULL, NULL);
 	}
 
-	if (!SUCCEEDED(CreateWindow(_T("edit"), _T("EditBox"), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, (GetSystemMetrics(SM_CXSCREEN)-600)/2,
-		(GetSystemMetrics(SM_CYSCREEN)-600)/2, 200, 25, hWnd, (HMENU) 100, NULL, NULL)))
+	if (!SUCCEEDED(CreateWindow(_T("edit"), _T("EditBox"), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 0,
+		400, 200, 25, hWnd, (HMENU) 100, NULL, NULL)))
 	{
 		MessageBox(NULL, _T("Generation error of Edit Box"), NULL, NULL);
 	}
 
-	//ShowWindow(hEditWND, SW_SHOWDEFAULT);
 	/*
-	if(Initialized())
+	if (!SUCCEEDED(btnWND = CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0,400,100,25,hWnd,(HMENU)0,NULL,NULL)))
 	{
-		if (!SUCCEEDED(D3DXCreateTextureFromFile(gDevice->g_pd3dDevice, background, &texture)))
-		{
-			MessageBox(NULL,_T("Image Load error"),NULL,NULL);
-		}
-	
-		if (!SUCCEEDED(D3DXCreateSprite(gDevice->g_pd3dDevice, &spriter)))
-		{
-			MessageBox(NULL,_T("Error on generating spriter"),NULL,NULL);
-		}
-
-		if (!SUCCEEDED(button->Initialize(gDevice->g_pd3dDevice, _T("..\\Resource\\confirm_button1.png"))))
-		{
-			MessageBox(NULL,_T("Load Error of Button texture"),NULL,NULL);
-		}
-				
-		if (!SUCCEEDED(D3DXCreateFont(gDevice->g_pd3dDevice, 40,30, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
-			DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("πŸ≈¡√º"), &pFont)))
-		{
-			MessageBox(NULL, _T("Load Error of Font from the System"), NULL, NULL);
-		}
-
-		if (!SUCCEEDED(CreateWindow(_T("edit"), NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 10, 10, 200, 25, hWnd, (HMENU) 100, NULL, NULL)))
-		{
-			MessageBox(NULL, _T("Generation error of Edit Box"), NULL, NULL);
-		}
-
-		ShowWindow(hEditWND, SW_SHOWDEFAULT);
+		MessageBox(NULL, _T("Generation error of Button"), NULL, NULL);
 	}
-	else
+	*/
+}
+
+bool Main_Scene::GenerateButton(int x, int y, int width, int height)
+{
+	/*
+	WNDCLASSEX wcex;
+
+	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
+	wcex.cbSize = sizeof(wcex);
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = ButtonProc;
+	wcex.hInstance = GetModuleHandle(NULL);
+	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wcex.lpszClassName = className;
+	wcex.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
+
+	if(!RegisterClassEx(&wcex))
 	{
-		Manage_Scene::Initialize(hWnd);
-
-		if (!SUCCEEDED(D3DXCreateTextureFromFile(gDevice->g_pd3dDevice, background, &texture)))
-		{
-			MessageBox(NULL,_T("Image Load error"),NULL,NULL);
-		}
-	
-		if (!SUCCEEDED(D3DXCreateSprite(gDevice->g_pd3dDevice, &spriter)))
-		{
-			MessageBox(NULL,_T("Error on generating spriter"),NULL,NULL);
-		}
-		
-		if (!SUCCEEDED(button->Initialize(gDevice->g_pd3dDevice, _T("..\\Resource\\confirm_button1.png"))))
-		{
-			MessageBox(NULL,_T("Load Error of Button texture"),NULL,NULL);
-		}
-
-		if (!SUCCEEDED(D3DXCreateFont(gDevice->g_pd3dDevice, 40,30, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
-			DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("πŸ≈¡√º"), &pFont)))
-		{
-			MessageBox(NULL, _T("Load Error of Font from the System"), NULL, NULL);
-		}
-
-		if (!SUCCEEDED(CreateWindow(_T("edit"), NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 10, 10, 200, 25, hWnd, (HMENU) 100, NULL, NULL)))
-		{
-			MessageBox(NULL, _T("Generation error of Edit Box"), NULL, NULL);
-		}
-
-		ShowWindow(hEditWND, SW_SHOWDEFAULT);
+		return false;
 	}
+
+	hWnd = CreateWindow(className, windowTitle, WS_OVERLAPPEDWINDOW, x, y, width, height,
+		NULL, NULL, wcex.hInstance, NULL );
+
+	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	return true;
 	*/
 }
 
@@ -144,8 +114,8 @@ void Main_Scene::Draw(float gameTime)
 
 	RECT rcSrcRect;
 	rcSrcRect.left = 0;
-	rcSrcRect.right = 600;
-	rcSrcRect.bottom = 600;
+	rcSrcRect.right = windowWidth;
+	rcSrcRect.bottom = windowHeight;
 	rcSrcRect.top = 0;
 	
 
