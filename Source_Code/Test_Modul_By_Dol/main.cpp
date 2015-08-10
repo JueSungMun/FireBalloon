@@ -12,6 +12,18 @@
 #define IMG_BIRD "..\\Resource\\bird_test\\bird_t.png"
 #define IMG_BG "..\\Resource\\bird_test\\background.png"
 #define IMG_GOALLINE "..\\Resource\\Goal_line.png"	
+
+#define IMG_0 "..\\Resource\\Literal\\0.png"	
+#define IMG_1 "..\\Resource\\Literal\\1.png"	
+#define IMG_2 "..\\Resource\\Literal\\2.png"
+#define IMG_3 "..\\Resource\\Literal\\3.png"
+#define IMG_4 "..\\Resource\\Literal\\4.png"
+#define IMG_5 "..\\Resource\\Literal\\5.png"
+#define IMG_6 "..\\Resource\\Literal\\6.png"
+#define IMG_7 "..\\Resource\\Literal\\7.png"
+#define IMG_8 "..\\Resource\\Literal\\8.png"
+#define IMG_9 "..\\Resource\\Literal\\9.png"
+
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 700
 
@@ -191,7 +203,6 @@ VOID Render()
 	//vecPosition.z = .0f;
 
 	//새의 움직임 제어
-	
 	if(bird_direction){
 		g_Enemy.Position.x += 2.0f;
 		g_Enemy.Position.y = (float)(50*cos(g_Enemy.Position.x*0.03)+500);
@@ -210,8 +221,6 @@ VOID Render()
 	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 10.0f;
 	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 10.0f;
 	if (GetKeyState(VK_DOWN) & 0x80000000) 	vecPosition.y += 10.0f;
-	
-	
 
 	// 충돌체크
 	// 보이는 적중에
@@ -297,10 +306,10 @@ VOID Render()
 
 		if ( g_Enemy.Visible == TRUE )
 	{
-		// 충돌 되었으면
-		if ( g_GoalLine.Position.y < vecPosition.y)
+		// 골라인과 플레이어가 만나면 
+		if ( g_GoalLine.Position.y-(88/2) < vecPosition.y )
 		{
-			// 상대방 파괴
+			// 스테이지 클리어
 			MessageBox(g_hWnd, "끝", MB_OK, 0);
 			exit(0);
 		}

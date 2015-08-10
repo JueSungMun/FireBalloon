@@ -46,11 +46,19 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>..\\Library\\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\\Library\\Lib\\x86</AdditionalLibraryDirectories>
+=======
+      <AdditionalIncludeDirectories>..\\Library\\Include\\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\\Library\\Lib\\x86\\</AdditionalLibraryDirectories>
+>>>>>>> origin/master
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
