@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="GameExplainScene.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Graphic_Lib.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Scene.cpp" />
@@ -88,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameExplainScene.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Graphic_Lib.h" />
     <ClInclude Include="Main_Scene.h" />
     <ClInclude Include="Manage_Scene.h" />

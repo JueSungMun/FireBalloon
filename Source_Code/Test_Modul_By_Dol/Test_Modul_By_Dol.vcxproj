@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Enemy.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{427DC98C-A417-4891-85AC-396D11389669}</ProjectGuid>
@@ -46,19 +50,18 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-<<<<<<< HEAD
       <AdditionalIncludeDirectories>..\\Library\\Include</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\\Library\\Lib\\x86</AdditionalLibraryDirectories>
-=======
-      <AdditionalIncludeDirectories>..\\Library\\Include\\</AdditionalIncludeDirectories>
+    <ClCompile>
+      <Link>
+        <GenerateDebugInformation>true</GenerateDebugInformation>
+        <AdditionalLibraryDirectories>..\\Library\\Lib\\x86</AdditionalLibraryDirectories>
+        <AdditionalIncludeDirectories>..\\Library\\Include\\</AdditionalIncludeDirectories>
+      </Link>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\\Library\\Lib\\x86\\</AdditionalLibraryDirectories>
->>>>>>> origin/master
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

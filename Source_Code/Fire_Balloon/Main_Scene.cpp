@@ -1,6 +1,6 @@
 #include "Main_Scene.h"
 
-Main_Scene::Main_Scene() : spriter(NULL), texture(NULL), pFont(NULL), windowWidth(600), windowHeight(700)
+Main_Scene::Main_Scene() : spriter(NULL), texture(NULL), pFont(NULL)
 { 
 	position.x=0;
 	position.y=0;
@@ -45,7 +45,7 @@ void Main_Scene::Initialize(HWND& hWnd)
 		Manage_Scene::Initialize(hWnd);
 	}
 	
-	if (!SUCCEEDED(D3DXCreateTextureFromFileEx(gDevice->g_pd3dDevice, background, windowWidth, windowHeight, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (!SUCCEEDED(D3DXCreateTextureFromFileEx(gDevice->g_pd3dDevice, background, GetWindowWidth(), GetWindowHeight(), 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &texture)))
 	{
 		MessageBox(NULL,_T("Image Load error"),NULL,NULL);
@@ -89,8 +89,8 @@ void Main_Scene::Draw(float gameTime)
 
 	RECT rcSrcRect;
 	rcSrcRect.left = 0;
-	rcSrcRect.right = windowWidth;
-	rcSrcRect.bottom = windowHeight;
+	rcSrcRect.right = GetWindowWidth();
+	rcSrcRect.bottom = GetWindowHeight();
 	rcSrcRect.top = 0;
 	
 

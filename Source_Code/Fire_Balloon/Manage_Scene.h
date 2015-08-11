@@ -18,6 +18,8 @@
 class Manage_Scene
 {
 private:
+	int windowWidth;
+	int windowHeight;
 	int sceneNumber;
 	bool isInitialed;
 
@@ -30,7 +32,8 @@ public:
 	void SetSceneNumber(int num);
 	void NextScene();
 	void BeforeScene();
-	//virtual void Draw() = 0;
+	int GetWindowWidth();
+	int GetWindowHeight();
 	virtual void Initialize(HWND& hWnd);
 	bool Initialized();
 	void Run();

@@ -3,8 +3,6 @@
 class GameExplainScene : public Manage_Scene
 {
 private:
-	int windowWidth;
-	int windowHeight;
 	D3DXVECTOR3 position;
 	D3DCOLOR color;
 	LPD3DXSPRITE spriter;

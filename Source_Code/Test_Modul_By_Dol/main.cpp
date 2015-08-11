@@ -4,6 +4,9 @@
 #include <strsafe.h>
 #include <time.h>
 #include <string>
+
+#include "Enemy.h"
+
 #pragma warning( default : 4996 ) 
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
@@ -51,7 +54,7 @@ struct Image
 	D3DXVECTOR3 Center;
 };
 
-Image g_Enemy;
+Enemy enemyArray[5];
 Image g_GoalLine;
 INT g_EnemyGage = 200;
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
@@ -85,15 +88,11 @@ void InitDX(void)
 	vecPosBG.z = .0f;
 
 	// 적 이미지 초기화
-	ZeroMemory(&g_Enemy, sizeof(g_Enemy));
-	g_Enemy.Source.left = 0;
-	g_Enemy.Source.top = 0;
-	g_Enemy.Source.right = 81;
-	g_Enemy.Source.bottom = 56;
-	g_Enemy.Visible = TRUE;
-
-	g_Enemy.Position.x = 1;
-	g_Enemy.Position.y = 0;
+	RECT rct;
+	rct.left = 0; rct.top=0; rct.right=81; rct.bottom=56;
+	ZeroMemory(&enemyArray, sizeof(enemyArray));
+	for(int i=0; i<5; i++)
+		enemyArray[i].initEnemy(rct);
 
 	// 골라인 초기화
 	ZeroMemory(&g_GoalLine, sizeof(g_GoalLine));
@@ -116,13 +115,12 @@ void LoadData(void)
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_pTexture);
 	D3DXCreateTextureFromFileEx(g_pd3dDevice, IMG_BG,
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_pBackground);
-	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_BIRD, 
-		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_Enemy.Texture); 
+		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_pBackground); 
 	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_GOALLINE, 
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_GoalLine.Texture); 
+	for(int i=0; i<5; i++)
+		enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD);
 }
 
 void Initilize(void)
@@ -167,6 +165,7 @@ VOID Cleanup()
 		g_pd3dDevice->Release();
 	if( g_pD3D != NULL )       
 		g_pD3D->Release();
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -181,7 +180,7 @@ VOID Render()
 	//D3DXVECTOR3 vecPosition;
 
 	static bool bird_direction = true;
-	static int offset =1;
+	static int offset =0;
 
 	rcSrcRect.left = 0;
 	rcSrcRect.top = 0;
@@ -203,40 +202,49 @@ VOID Render()
 	//vecPosition.z = .0f;
 
 	//새의 움직임 제어
-	if(bird_direction){
-		g_Enemy.Position.x += 2.0f;
-		g_Enemy.Position.y = (float)(50*cos(g_Enemy.Position.x*0.03)+500);
-		if(g_Enemy.Position.x >= SCREEN_WIDTH)
-			bird_direction = false;
+	D3DXVECTOR3* tmp = enemyArray[0].getPosition();
+	if(bird_direction)
+	{
+		enemyArray[0].sineMoving(100);
+		enemyArray[1].sineMoving(200);
+		enemyArray[2].sineMoving(300);
+		enemyArray[3].sineMoving(400);
+		enemyArray[4].sineMoving(500);
+		
+		if(tmp->x >= SCREEN_WIDTH)
+			bird_direction=FALSE;
 	}
 	else
 	{
-		g_Enemy.Position.x -= 3.0f;
-		g_Enemy.Position.y = (float)(50*cos(g_Enemy.Position.x*0.09)+500);
-		if(g_Enemy.Position.x <= 0)
-			bird_direction = true;
+		enemyArray[0].invSineMoving(100);
+		enemyArray[1].invSineMoving(200);
+		enemyArray[2].invSineMoving(300);
+		enemyArray[3].invSineMoving(400);
+		enemyArray[4].invSineMoving(500);
+		if(tmp->x <= 0)
+			bird_direction=TRUE;
 	}
 
-	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 10.0f;
-	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 10.0f;
-	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 10.0f;
+
+	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 7.0f;
+	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 7.0f;
+	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 5.0f;
 	if (GetKeyState(VK_DOWN) & 0x80000000) 	vecPosition.y += 10.0f;
 
 	// 충돌체크
-	// 보이는 적중에
-	if ( g_Enemy.Visible == TRUE )
+	// 보이는 적중에 부딪히면 파괴
+	for(int i=0; i<5; i++)
 	{
-		// 충돌 되었으면
-		if ( vecPosition.x < g_Enemy.Position.x + g_Enemy.Source.right
-			&&g_Enemy.Position.x < vecPosition.x + rcSrcRect.right
-			&&vecPosition.y < g_Enemy.Position.y + g_Enemy.Source.bottom
-			&&g_Enemy.Position.y < vecPosition.y + rcSrcRect.bottom
-			)
+		RECT* source = enemyArray[i].getSource();
+		D3DXVECTOR3* pos = enemyArray[i].getPosition();
+		if(vecPosition.x < pos->x + source->right
+			&&pos->x < vecPosition.x + rcSrcRect.right
+			&&vecPosition.y < pos->y + source->bottom
+			&&pos->y < vecPosition.y + rcSrcRect.bottom)
 		{
-			// 상대방 파괴
-			g_Enemy.Visible = FALSE;
+			enemyArray[i].setVisible(FALSE);
 		}
-	}
+	}		
 	//총알발사
 	/*if (GetKeyState(0x5a) & 0x80000000) 
 	{
@@ -277,6 +285,22 @@ VOID Render()
 
 		//배경그리기
 		//top sprite
+		bgRect.left = 0;
+		bgRect.right = 600;
+		bgRect.top = 0;
+		bgRect.bottom = SCREEN_HEIGHT;
+		vecPosBG.y = -offset;
+		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
+
+		bgRect.top = 0;
+		bgRect.bottom = offset;
+		
+		D3DXVECTOR3 vecPosBG2(0,(float)(SCREEN_HEIGHT-offset),0);
+		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
+		offset++;
+		offset = offset%SCREEN_HEIGHT;
+
+		/*
 		bgRect.left=0;
 		bgRect.right=600;
 
@@ -289,12 +313,9 @@ VOID Render()
 		bgRect.bottom=SCREEN_HEIGHT-offset;
 		D3DXVECTOR3 vecPosBG2(0,(float)offset,0);
 		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
-		offset--;
-
-		if ( g_Enemy.Visible == TRUE )
-			g_pSprite->Draw( g_Enemy.Texture, &g_Enemy.Source, &g_Enemy.Center, &g_Enemy.Position, 0xffffffff );
-
-
+		offset=offset%600;
+		*/
+		
 		//시작하고 10초뒤에 골라인 올라옴
 		time_t crtTime;
 		time(&crtTime);
@@ -303,17 +324,20 @@ VOID Render()
 			g_GoalLine.Position.y -= 3.0f;
 			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
 		}
+		
+		for(int i=0; i<5; i++)
+		{
+			if(enemyArray[i].getVisible() == TRUE)
+				g_pSprite->Draw( enemyArray[i].getTexture(), enemyArray[i].getSource(), enemyArray[i].getCenter(), enemyArray[i].getPosition(), 0xffffffff );
+		}
 
-		if ( g_Enemy.Visible == TRUE )
-	{
 		// 골라인과 플레이어가 만나면 
-		if ( g_GoalLine.Position.y-(88/2) < vecPosition.y )
+		if ( g_GoalLine.Position.y < vecPosition.y )
 		{
 			// 스테이지 클리어
 			MessageBox(g_hWnd, "끝", MB_OK, 0);
 			exit(0);
 		}
-	}
 		//총알그려줌
 		/*for ( INT i=0; i<100; ++i )
 		{

@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include "Main_Scene.h"
 #include "GameExplainScene.h"
+#include "GameScene.h"
 
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int width, int height, HWND& hWnd);
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int width, int height, HWND& hWnd);
@@ -30,7 +31,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if(msg.message == WM_QUIT) break;
 			else
 			{
-
+				if(obj->GetSceneNumber() == 3)
+				{
+					obj->Draw(0.0f);
+				}
 			}
 		}
 		return msg.wParam;
@@ -88,7 +92,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			break;
 		case WM_PAINT :
 			hdc = BeginPaint(hWnd, &ps);
+			obj->Draw(0.0f);
 			EndPaint(hWnd, &ps);
+			return 0;
+			break;
+		case WM_LBUTTONDOWN : 
+			if(obj->GetSceneNumber() == 2)
+			{
+				delete obj;
+				obj = new GameScene();
+				obj->Initialize(hWnd);
+				obj->Draw(0.0f);
+			}
 			return 0;
 			break;
 		case WM_COMMAND : 
@@ -128,11 +143,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 				{
 					if(raw->data.keyboard.VKey ==VK_SPACE)
 					{
-						MessageBox(NULL, _T("Space key was pressed"), NULL, NULL);
-						delete obj;
-						obj = new Manage_Scene();
-						obj->Initialize(hWnd);
-						obj->Draw(0.0f);
+						//wchar_t sceneNum[10];
+						//_itow_s(obj->GetSceneNumber(), sceneNum, 10);
+						//MessageBox(NULL, sceneNum, NULL, NULL);
+						//delete obj;
+						//obj = new Manage_Scene();
+						//obj->Initialize(hWnd);
+						//obj->Draw(0.0f);
+
 					}
 				}
 			}

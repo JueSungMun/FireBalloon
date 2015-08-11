@@ -1,27 +1,17 @@
-<<<<<<< HEAD
-﻿빌드 시작: 2015-08-10 오후 11:50:59
-     1>2 노드의 "C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
-     1>Link:
-         D:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\\Library\\Lib\\x86 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\main.obj
-         LINK : C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
-         Test_Modul_By_Dol.vcxproj -> C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe
-     1>"C:\Users\주성문\Documents\GitHub\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
-
-빌드했습니다.
-
-경과 시간: 00:00:00.58
-=======
-﻿빌드 시작: 2015-08-11 오전 12:29:17
-     1>2 노드의 "C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
+﻿빌드 시작: 2015-08-11 오후 6:59:17
+     1>2 노드의 "C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include\\ /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Enemy.cpp main.cpp
          main.cpp
+     1>c:\users\jue\documents\visual studio 2012\projects\fireballoon\source_code\test_modul_by_dol\main.cpp(292): warning C4244: '=' : 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+         Enemy.cpp
+         코드를 생성하고 있습니다...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\\Library\\Lib\\x86\\ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\main.obj
-         Test_Modul_By_Dol.vcxproj -> C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe
-     1>"C:\Users\STYNER\Desktop\FireBalloon\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\\Library\\Lib\\x86\\ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\Enemy.obj
+         Debug\main.obj
+         Test_Modul_By_Dol.vcxproj -> C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe
+     1>"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
 
 빌드했습니다.
 
-경과 시간: 00:00:01.34
->>>>>>> origin/master
+경과 시간: 00:00:07.62

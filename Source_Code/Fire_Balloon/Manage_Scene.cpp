@@ -1,6 +1,6 @@
 #include "Manage_Scene.h"
 
-Manage_Scene::Manage_Scene() : sceneNumber(0) , isInitialed(false)
+Manage_Scene::Manage_Scene() : sceneNumber(0) , isInitialed(false), windowWidth(600), windowHeight(700)
 {
 
 }
@@ -80,4 +80,14 @@ LPCWSTR Manage_Scene::GetEditWindowText()
 {
 	LPCWSTR temp = _T("");
 	return temp;
+}
+
+int Manage_Scene::GetWindowWidth()
+{
+	return windowWidth;
+}
+
+int Manage_Scene::GetWindowHeight()
+{
+	return windowHeight;
 }

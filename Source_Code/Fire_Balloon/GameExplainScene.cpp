@@ -1,6 +1,6 @@
 #include "GameExplainScene.h"
 
-GameExplainScene::GameExplainScene() : spriter(NULL), texture(NULL), windowWidth(600), windowHeight(700)
+GameExplainScene::GameExplainScene() : spriter(NULL), texture(NULL)
 { 
 	position.x=0;
 	position.y=0;
@@ -32,7 +32,7 @@ void GameExplainScene::Initialize(HWND& hWnd)
 		Manage_Scene::Initialize(hWnd);
 	}
 	
-	if (!SUCCEEDED(D3DXCreateTextureFromFileEx(gDevice->g_pd3dDevice, background, windowWidth, windowHeight, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (!SUCCEEDED(D3DXCreateTextureFromFileEx(gDevice->g_pd3dDevice, background, GetWindowWidth(), GetWindowHeight(), 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &texture)))
 	{
 		MessageBox(NULL,_T("Image Load error"),NULL,NULL);
@@ -52,8 +52,8 @@ void GameExplainScene::Draw(float gameTime)
 
 	RECT rcSrcRect;
 	rcSrcRect.left = 0;
-	rcSrcRect.right = windowWidth;
-	rcSrcRect.bottom = windowHeight;
+	rcSrcRect.right = GetWindowWidth();
+	rcSrcRect.bottom = GetWindowHeight();
 	rcSrcRect.top = 0;
 	
     if(spriter && texture)
@@ -62,7 +62,6 @@ void GameExplainScene::Draw(float gameTime)
 		spriter->Draw(texture,&rcSrcRect,NULL, &position, color);
 		spriter->End();
 	}
-
 	
 	gDevice->End();
 	gDevice->Present();

@@ -10,8 +10,6 @@
 class Main_Scene : public Manage_Scene
 {
 private:
-	int windowWidth;
-	int windowHeight;
 	HWND btnWnd;
 	HWND hEditWnd;
 	D3DXVECTOR3 position;
