@@ -1,11 +1,11 @@
-#include <d3d9.h>
-#include <d3dx9.h>
 #pragma warning( disable : 4996 ) // disable deprecated warning 
 #include <strsafe.h>
 #include <time.h>
 #include <string>
+#include <cstdlib>
 
 #include "Enemy.h"
+#include "Score.h"
 
 #pragma warning( default : 4996 ) 
 #pragma comment(lib, "d3d9.lib")
@@ -56,7 +56,8 @@ struct Image
 
 Enemy enemyArray[5];
 Image g_GoalLine;
-INT g_EnemyGage = 200;
+Score score;
+int currentScore =0;
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 HRESULT InitD3D( HWND hWnd );
 
@@ -69,7 +70,7 @@ void InitWin(void)
 	RegisterClassEx( &g_wc );
 
 	// Create the application's window
-	g_hWnd = CreateWindow( "D3D Tutorial", "Fireballoon",
+	g_hWnd = CreateWindow( "D3D Tutorial", "공평하도다",
 		WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
 		NULL, NULL, g_wc.hInstance, NULL );
 }
@@ -106,6 +107,8 @@ void InitDX(void)
 
 	time(&startTime);
 	goaltime = startTime+10;
+
+	score.initScore(g_hWnd);
 }
 
 void LoadData(void)
@@ -191,25 +194,16 @@ VOID Render()
 	vecCenter.y = .0f;
 	vecCenter.z = .0f;
 
-	//RECT rcSrcBullet;
-	//rcSrcBullet.left = 0;
-	//rcSrcBullet.top = 0;
-	//rcSrcBullet.right = 13;
-	//rcSrcBullet.bottom = 26;
-
-	//vecPosition.x = 10.0f;
-	//vecPosition.y = 10.0f;
-	//vecPosition.z = .0f;
-
 	//새의 움직임 제어
 	D3DXVECTOR3* tmp = enemyArray[0].getPosition();
+	srand((unsigned int)time(NULL));
 	if(bird_direction)
 	{
-		enemyArray[0].sineMoving(100);
-		enemyArray[1].sineMoving(200);
-		enemyArray[2].sineMoving(300);
-		enemyArray[3].sineMoving(400);
-		enemyArray[4].sineMoving(500);
+		enemyArray[0].sineMoving(rand()%700);
+		enemyArray[1].sineMoving(rand()%700);
+		enemyArray[2].sineMoving(rand()%700);
+		enemyArray[3].sineMoving(rand()%700);
+		enemyArray[4].sineMoving(rand()%700);
 		
 		if(tmp->x >= SCREEN_WIDTH)
 			bird_direction=FALSE;
@@ -225,7 +219,6 @@ VOID Render()
 			bird_direction=TRUE;
 	}
 
-
 	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 7.0f;
 	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 7.0f;
 	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 5.0f;
@@ -233,16 +226,21 @@ VOID Render()
 
 	// 충돌체크
 	// 보이는 적중에 부딪히면 파괴
+	
 	for(int i=0; i<5; i++)
 	{
-		RECT* source = enemyArray[i].getSource();
-		D3DXVECTOR3* pos = enemyArray[i].getPosition();
-		if(vecPosition.x < pos->x + source->right
-			&&pos->x < vecPosition.x + rcSrcRect.right
-			&&vecPosition.y < pos->y + source->bottom
-			&&pos->y < vecPosition.y + rcSrcRect.bottom)
+		if(enemyArray[i].getVisible())
 		{
-			enemyArray[i].setVisible(FALSE);
+			RECT* source = enemyArray[i].getSource();
+			D3DXVECTOR3* pos = enemyArray[i].getPosition();
+			if(vecPosition.x < pos->x + source->right
+				&&pos->x < vecPosition.x + rcSrcRect.right
+				&&vecPosition.y < pos->y + source->bottom
+				&&pos->y < vecPosition.y + rcSrcRect.bottom)
+			{		
+				enemyArray[i].setVisible(FALSE);
+				currentScore += 100;
+			}	
 		}
 	}		
 	//총알발사
@@ -259,8 +257,6 @@ VOID Render()
 			}
 		}
 	}*/
-
-
 	//총알속도
 	/*for (INT i=0; i<100; ++i)
 	{
@@ -289,7 +285,7 @@ VOID Render()
 		bgRect.right = 600;
 		bgRect.top = 0;
 		bgRect.bottom = SCREEN_HEIGHT;
-		vecPosBG.y = -offset;
+		vecPosBG.y = -(float)offset;
 		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
 
 		bgRect.top = 0;
@@ -325,6 +321,8 @@ VOID Render()
 			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
 		}
 		
+		
+
 		for(int i=0; i<5; i++)
 		{
 			if(enemyArray[i].getVisible() == TRUE)
@@ -350,6 +348,9 @@ VOID Render()
 		g_pSprite->Draw(g_pTexture, &rcSrcRect, &vecCenter, &vecPosition, 0xffffffff);
 		g_pSprite->End();
 
+		g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
+		score.showText(std::to_string((crtTime-startTime)*10+currentScore));
+		g_pSprite->End();
 		// End the scene
 		g_pd3dDevice->EndScene();
 	}

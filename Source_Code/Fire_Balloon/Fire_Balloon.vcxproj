@@ -85,6 +85,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Scene.cpp" />
     <ClCompile Include="Manage_Scene.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="Graphic_Lib.h" />
     <ClInclude Include="Main_Scene.h" />
     <ClInclude Include="Manage_Scene.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
