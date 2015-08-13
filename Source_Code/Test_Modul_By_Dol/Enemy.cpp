@@ -17,18 +17,46 @@ void Enemy::initEnemy(RECT inputX)
 	Visible = TRUE;
 	Position.x = 1;
 	Position.y = 0;
+	ani_inverval =0;
 }
 
 void Enemy::sineMoving(int offset)
 {
+	
 	Position.x += 2.0f;
 	Position.y = (float)(50*sin(Position.x*0.03)+offset);
+
+	ani_inverval++;
+	if(ani_inverval%5==0)
+		if(Source.bottom < 306)
+		{
+			Source.top+=51;
+			Source.bottom+=51;
+		}
+		else
+		{
+			Source.top =0;
+			Source.bottom=51;
+		}
 }
 
 void Enemy::invSineMoving(int offset)
 {
 	Position.x -= 2.0f;
 	Position.y = (float)(50*sin(Position.x*0.03)+offset);
+
+	ani_inverval++;
+	if(ani_inverval%5==0)
+		if(Source.bottom < 306)
+		{
+			Source.top+=51;
+			Source.bottom+=51;
+		}
+		else
+		{
+			Source.top =0;
+			Source.bottom=51;
+		}
 }
 
 LPDIRECT3DTEXTURE9 Enemy::getTexture()

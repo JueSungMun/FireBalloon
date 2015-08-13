@@ -13,11 +13,14 @@
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="TextDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Score.h" />
+    <ClInclude Include="TextDisplay.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{427DC98C-A417-4891-85AC-396D11389669}</ProjectGuid>

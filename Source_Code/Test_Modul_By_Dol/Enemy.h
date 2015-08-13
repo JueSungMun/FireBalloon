@@ -10,6 +10,7 @@ private:
 	RECT Source;
 	D3DXVECTOR3 Position;
 	const D3DXVECTOR3 Center;
+	int ani_inverval;
 
 public:
 	Enemy(void);

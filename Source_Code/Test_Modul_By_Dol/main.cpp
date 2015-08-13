@@ -5,14 +5,15 @@
 #include <cstdlib>
 
 #include "Enemy.h"
-#include "Score.h"
+#include "TextDisplay.h"
 
 #pragma warning( default : 4996 ) 
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
 
 #define IMG_FIREBALLOON "..\\Resource\\bird_test\\fireballoon_t.png"
-#define IMG_BIRD "..\\Resource\\bird_test\\bird_t.png"
+#define IMG_BIRD_RIGHT "..\\Resource\\bird_test\\sprite_bird_right.png"
+#define IMG_BIRD_LEFT "..\\Resource\\bird_test\\sprite_bird_left.png"
 #define IMG_BG "..\\Resource\\bird_test\\background.png"
 #define IMG_GOALLINE "..\\Resource\\Goal_line.png"	
 
@@ -56,7 +57,9 @@ struct Image
 
 Enemy enemyArray[5];
 Image g_GoalLine;
-Score score;
+TextDisplay score_display;
+TextDisplay life_display;
+int life = 200;
 int currentScore =0;
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 HRESULT InitD3D( HWND hWnd );
@@ -106,9 +109,10 @@ void InitDX(void)
 	g_GoalLine.Position.y = 700;
 
 	time(&startTime);
-	goaltime = startTime+10;
+	goaltime = startTime+50;
 
-	score.initScore(g_hWnd);
+	score_display.initScore(g_hWnd);
+	life_display.initLife(g_hWnd);
 }
 
 void LoadData(void)
@@ -122,8 +126,9 @@ void LoadData(void)
 	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_GOALLINE, 
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_GoalLine.Texture); 
-	for(int i=0; i<5; i++)
-		enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD);
+	
+	//for(int i=0; i<5; i++)
+	//	enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_RIGHT);
 }
 
 void Initilize(void)
@@ -199,23 +204,28 @@ VOID Render()
 	srand((unsigned int)time(NULL));
 	if(bird_direction)
 	{
-		enemyArray[0].sineMoving(rand()%700);
-		enemyArray[1].sineMoving(rand()%700);
-		enemyArray[2].sineMoving(rand()%700);
-		enemyArray[3].sineMoving(rand()%700);
-		enemyArray[4].sineMoving(rand()%700);
+		for(int i=0; i<5; i++)
+			enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_RIGHT);
 		
-		if(tmp->x >= SCREEN_WIDTH)
+		enemyArray[0].sineMoving(100);
+		enemyArray[1].sineMoving(200);
+		enemyArray[2].sineMoving(300);
+		enemyArray[3].sineMoving(400);
+		enemyArray[4].sineMoving(500);
+		
+		if(tmp->x+40 >= SCREEN_WIDTH)
 			bird_direction=FALSE;
 	}
 	else
 	{
+		for(int i=0; i<5; i++)
+			enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_LEFT);
 		enemyArray[0].invSineMoving(100);
 		enemyArray[1].invSineMoving(200);
 		enemyArray[2].invSineMoving(300);
 		enemyArray[3].invSineMoving(400);
 		enemyArray[4].invSineMoving(500);
-		if(tmp->x <= 0)
+		if(tmp->x+40 <= 0)
 			bird_direction=TRUE;
 	}
 
@@ -240,9 +250,13 @@ VOID Render()
 			{		
 				enemyArray[i].setVisible(FALSE);
 				currentScore += 100;
+				life -= 10;
 			}	
 		}
 	}		
+
+	if(life<=0)
+		MessageBox(g_hWnd, "You are dead!", MB_OK, 1);
 	//총알발사
 	/*if (GetKeyState(0x5a) & 0x80000000) 
 	{
@@ -321,19 +335,16 @@ VOID Render()
 			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
 		}
 		
-		
-
 		for(int i=0; i<5; i++)
 		{
 			if(enemyArray[i].getVisible() == TRUE)
 				g_pSprite->Draw( enemyArray[i].getTexture(), enemyArray[i].getSource(), enemyArray[i].getCenter(), enemyArray[i].getPosition(), 0xffffffff );
 		}
-
 		// 골라인과 플레이어가 만나면 
 		if ( g_GoalLine.Position.y < vecPosition.y )
 		{
 			// 스테이지 클리어
-			MessageBox(g_hWnd, "끝", MB_OK, 0);
+			MessageBox(NULL, "STAGE CLEAR!", "Congraturations!", MB_OK);
 			exit(0);
 		}
 		//총알그려줌
@@ -346,10 +357,12 @@ VOID Render()
 		}*/
 
 		g_pSprite->Draw(g_pTexture, &rcSrcRect, &vecCenter, &vecPosition, 0xffffffff);
-		g_pSprite->End();
-
-		g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
-		score.showText(std::to_string((crtTime-startTime)*10+currentScore));
+		//g_pSprite->End();
+		
+	//	g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
+	//	D3DXCreateTextureFromFileInMemory(g_pd3dDevice,(LPCVOID)life,100,&g_pBackground);
+		score_display.showScore(std::to_string((crtTime-startTime)*10+currentScore));
+		life_display.showLife(std::to_string(life));
 		g_pSprite->End();
 		// End the scene
 		g_pd3dDevice->EndScene();
