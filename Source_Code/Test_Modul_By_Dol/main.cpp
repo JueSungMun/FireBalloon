@@ -1,35 +1,4 @@
-#pragma warning( disable : 4996 ) // disable deprecated warning 
-#include <strsafe.h>
-#include <time.h>
-#include <string>
-#include <cstdlib>
-
-#include "Enemy.h"
-#include "TextDisplay.h"
-
-#pragma warning( default : 4996 ) 
-#pragma comment(lib, "d3d9.lib")
-#pragma comment(lib, "d3dx9.lib")
-
-#define IMG_FIREBALLOON "..\\Resource\\bird_test\\fireballoon_t.png"
-#define IMG_BIRD_RIGHT "..\\Resource\\bird_test\\sprite_bird_right.png"
-#define IMG_BIRD_LEFT "..\\Resource\\bird_test\\sprite_bird_left.png"
-#define IMG_BG "..\\Resource\\bird_test\\background.png"
-#define IMG_GOALLINE "..\\Resource\\Goal_line.png"	
-
-#define IMG_0 "..\\Resource\\Literal\\0.png"	
-#define IMG_1 "..\\Resource\\Literal\\1.png"	
-#define IMG_2 "..\\Resource\\Literal\\2.png"
-#define IMG_3 "..\\Resource\\Literal\\3.png"
-#define IMG_4 "..\\Resource\\Literal\\4.png"
-#define IMG_5 "..\\Resource\\Literal\\5.png"
-#define IMG_6 "..\\Resource\\Literal\\6.png"
-#define IMG_7 "..\\Resource\\Literal\\7.png"
-#define IMG_8 "..\\Resource\\Literal\\8.png"
-#define IMG_9 "..\\Resource\\Literal\\9.png"
-
-#define SCREEN_WIDTH 600
-#define SCREEN_HEIGHT 700
+#include "All_Header.h"
 
 LPDIRECT3D9             g_pD3D       = NULL; // Used to create the D3DDevice
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; // Our rendering device
@@ -55,7 +24,8 @@ struct Image
 	D3DXVECTOR3 Center;
 };
 
-Enemy enemyArray[5];
+//Enemy enemyArray[5];
+ObjectManager* om;
 Image g_GoalLine;
 TextDisplay score_display;
 TextDisplay life_display;
@@ -73,7 +43,7 @@ void InitWin(void)
 	RegisterClassEx( &g_wc );
 
 	// Create the application's window
-	g_hWnd = CreateWindow( "D3D Tutorial", "공평하도다",
+	g_hWnd = CreateWindow( "D3D Tutorial", "FIREBALLOON",
 		WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
 		NULL, NULL, g_wc.hInstance, NULL );
 }
@@ -92,11 +62,12 @@ void InitDX(void)
 	vecPosBG.z = .0f;
 
 	// 적 이미지 초기화
-	RECT rct;
-	rct.left = 0; rct.top=0; rct.right=81; rct.bottom=56;
-	ZeroMemory(&enemyArray, sizeof(enemyArray));
-	for(int i=0; i<5; i++)
-		enemyArray[i].initEnemy(rct);
+	//RECT rct;
+	//rct.left = 0; rct.top=0; rct.right=81; rct.bottom=56;
+	ZeroMemory(&om, sizeof(ObjectManager));
+//	for(int i=0; i<5; i++)
+//		enemyArray[i].initEnemy(rct);
+	
 
 	// 골라인 초기화
 	ZeroMemory(&g_GoalLine, sizeof(g_GoalLine));
@@ -173,7 +144,6 @@ VOID Cleanup()
 		g_pd3dDevice->Release();
 	if( g_pD3D != NULL )       
 		g_pD3D->Release();
-	
 }
 
 //-----------------------------------------------------------------------------
@@ -187,7 +157,6 @@ VOID Render()
 	D3DXVECTOR3 vecCenter;
 	//D3DXVECTOR3 vecPosition;
 
-	static bool bird_direction = true;
 	static int offset =0;
 
 	rcSrcRect.left = 0;
@@ -199,35 +168,23 @@ VOID Render()
 	vecCenter.y = .0f;
 	vecCenter.z = .0f;
 
-	//새의 움직임 제어
-	D3DXVECTOR3* tmp = enemyArray[0].getPosition();
 	srand((unsigned int)time(NULL));
-	if(bird_direction)
-	{
-		for(int i=0; i<5; i++)
-			enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_RIGHT);
-		
-		enemyArray[0].sineMoving(100);
-		enemyArray[1].sineMoving(200);
-		enemyArray[2].sineMoving(300);
-		enemyArray[3].sineMoving(400);
-		enemyArray[4].sineMoving(500);
-		
-		if(tmp->x+40 >= SCREEN_WIDTH)
-			bird_direction=FALSE;
-	}
-	else
-	{
-		for(int i=0; i<5; i++)
-			enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_LEFT);
-		enemyArray[0].invSineMoving(100);
-		enemyArray[1].invSineMoving(200);
-		enemyArray[2].invSineMoving(300);
-		enemyArray[3].invSineMoving(400);
-		enemyArray[4].invSineMoving(500);
-		if(tmp->x+40 <= 0)
-			bird_direction=TRUE;
-	}
+	
+	om = new ObjectManager;
+	om->insertObj(0);
+	om->insertObj(1);
+	om->insertObj(2);
+	RECT rct;
+	rct.left = BIRD_RECT_LEFT; 
+	rct.top = BIRD_RECT_TOP; 
+	rct.right = BIRD_RECT_RIGHT; 
+	rct.bottom = BIRD_RECT_BOTTOM;
+	om->getEnemy(0).initEnemy(rct);
+	om->getEnemy(1).initEnemy(rct);
+	om->getEnemy(2).initEnemy(rct);
+	om->getEnemy(0).manageMoving(g_pd3dDevice, 100);
+	om->getEnemy(1).manageMoving(g_pd3dDevice, 200);
+	om->getEnemy(2).manageMoving(g_pd3dDevice, 300);
 
 	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 7.0f;
 	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 7.0f;
@@ -237,26 +194,27 @@ VOID Render()
 	// 충돌체크
 	// 보이는 적중에 부딪히면 파괴
 	
-	for(int i=0; i<5; i++)
-	{
-		if(enemyArray[i].getVisible())
+	for(int i=0; i<MAX_ENEMY; i++)
+		if(om->getEnemy(i).getVisible())
 		{
-			RECT* source = enemyArray[i].getSource();
-			D3DXVECTOR3* pos = enemyArray[i].getPosition();
+			RECT* source = om->getEnemy(i).getSource();
+			D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
 			if(vecPosition.x < pos->x + source->right
 				&&pos->x < vecPosition.x + rcSrcRect.right
 				&&vecPosition.y < pos->y + source->bottom
 				&&pos->y < vecPosition.y + rcSrcRect.bottom)
 			{		
-				enemyArray[i].setVisible(FALSE);
+				om->getEnemy(i).setVisible(FALSE);
 				currentScore += 100;
 				life -= 10;
 			}	
 		}
-	}		
 
 	if(life<=0)
-		MessageBox(g_hWnd, "You are dead!", MB_OK, 1);
+	{
+		MessageBox(g_hWnd, "Oops!","You are dead!", MB_OK);
+		exit(1);
+	}
 	//총알발사
 	/*if (GetKeyState(0x5a) & 0x80000000) 
 	{
@@ -335,10 +293,10 @@ VOID Render()
 			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
 		}
 		
-		for(int i=0; i<5; i++)
+		for(int i=0; i<MAX_ENEMY; i++)
 		{
-			if(enemyArray[i].getVisible() == TRUE)
-				g_pSprite->Draw( enemyArray[i].getTexture(), enemyArray[i].getSource(), enemyArray[i].getCenter(), enemyArray[i].getPosition(), 0xffffffff );
+			if(om->getEnemy(i).getVisible() == TRUE)
+				g_pSprite->Draw( om->getEnemy(i).getTexture(), om->getEnemy(i).getSource(), om->getEnemy(i).getCenter(), om->getEnemy(i).getPosition(), 0xffffffff );
 		}
 		// 골라인과 플레이어가 만나면 
 		if ( g_GoalLine.Position.y < vecPosition.y )

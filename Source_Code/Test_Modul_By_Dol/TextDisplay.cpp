@@ -1,4 +1,4 @@
-#include "TextDisplay.h"
+#include "All_Header.h"
 
 
 TextDisplay::TextDisplay(void)
@@ -49,5 +49,5 @@ void TextDisplay::showLife(std::string s)
 {
 	std::string score = "LIFE ";
 	score.append(s);
-//	DrawText(hDC, score.c_str(), score.length(), &rc, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+	DrawText(hDC, score.c_str(), score.length(), &rc, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }

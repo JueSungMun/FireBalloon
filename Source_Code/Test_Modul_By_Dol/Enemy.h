@@ -1,6 +1,4 @@
 #pragma once
-#include <d3d9.h>
-#include <d3dx9.h>
 
 class Enemy
 {
@@ -11,19 +9,24 @@ private:
 	D3DXVECTOR3 Position;
 	const D3DXVECTOR3 Center;
 	int ani_inverval;
+	BOOL direction;
+	int id;
 
 public:
+	Enemy(int);
 	Enemy(void);
 	~Enemy(void);
-	void initEnemy(RECT);
-	void setTexture(LPDIRECT3DDEVICE9, const char* );
+	void initEnemy(RECT&);
+	void setTexture(LPDIRECT3DDEVICE9&, const char* );
 	void setSource(RECT);
 	void setVisible(BOOL);
 	void setPosition(D3DXVECTOR3);
 	void setCenter(const D3DXVECTOR3);
+	void manageMoving(LPDIRECT3DDEVICE9&, int);
 
+	int getID();
 	BOOL getVisible();
-	LPDIRECT3DTEXTURE9 getTexture();
+	LPDIRECT3DTEXTURE9& getTexture();
 	RECT* getSource();
 	D3DXVECTOR3* getPosition();
 	const D3DXVECTOR3* getCenter();

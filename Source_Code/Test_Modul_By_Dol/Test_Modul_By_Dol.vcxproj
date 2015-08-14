@@ -13,10 +13,13 @@
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="TextDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="All_Header.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="TextDisplay.h" />
   </ItemGroup>
   <ItemGroup>
