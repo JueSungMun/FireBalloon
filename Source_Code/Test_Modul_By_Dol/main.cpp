@@ -33,6 +33,8 @@ int life = 200;
 int currentScore =0;
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 HRESULT InitD3D( HWND hWnd );
+LPD3DXFONT scoreFont;
+LPD3DXFONT lifeFont;
 
 void InitWin(void)
 {
@@ -65,6 +67,18 @@ void InitDX(void)
 	//RECT rct;
 	//rct.left = 0; rct.top=0; rct.right=81; rct.bottom=56;
 	ZeroMemory(&om, sizeof(ObjectManager));
+	om = new ObjectManager;
+	om->insertObj(0);
+	om->insertObj(1);
+	om->insertObj(2);
+	RECT rct;
+	rct.left = BIRD_RECT_LEFT; 
+	rct.top = BIRD_RECT_TOP; 
+	rct.right = BIRD_RECT_RIGHT; 
+	rct.bottom = BIRD_RECT_BOTTOM;
+	om->getEnemy(0).initEnemy(rct);
+	om->getEnemy(1).initEnemy(rct);
+	om->getEnemy(2).initEnemy(rct);
 //	for(int i=0; i<5; i++)
 //		enemyArray[i].initEnemy(rct);
 	
@@ -97,7 +111,10 @@ void LoadData(void)
 	D3DXCreateTextureFromFileEx( g_pd3dDevice, IMG_GOALLINE, 
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE, D3DX_FILTER_NONE, NULL, NULL, NULL, &g_GoalLine.Texture); 
-	
+	D3DXCreateFont(g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "¹ÙÅÁÃ¼", &scoreFont);
+	D3DXCreateFont(g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "¹ÙÅÁÃ¼", &lifeFont);
 	//for(int i=0; i<5; i++)
 	//	enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_RIGHT);
 }
@@ -170,18 +187,7 @@ VOID Render()
 
 	srand((unsigned int)time(NULL));
 	
-	om = new ObjectManager;
-	om->insertObj(0);
-	om->insertObj(1);
-	om->insertObj(2);
-	RECT rct;
-	rct.left = BIRD_RECT_LEFT; 
-	rct.top = BIRD_RECT_TOP; 
-	rct.right = BIRD_RECT_RIGHT; 
-	rct.bottom = BIRD_RECT_BOTTOM;
-	om->getEnemy(0).initEnemy(rct);
-	om->getEnemy(1).initEnemy(rct);
-	om->getEnemy(2).initEnemy(rct);
+	
 	om->getEnemy(0).manageMoving(g_pd3dDevice, 100);
 	om->getEnemy(1).manageMoving(g_pd3dDevice, 200);
 	om->getEnemy(2).manageMoving(g_pd3dDevice, 300);
@@ -319,8 +325,31 @@ VOID Render()
 		
 	//	g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
 	//	D3DXCreateTextureFromFileInMemory(g_pd3dDevice,(LPCVOID)life,100,&g_pBackground);
-		score_display.showScore(std::to_string((crtTime-startTime)*10+currentScore));
-		life_display.showLife(std::to_string(life));
+		//score_display.showScore(std::to_string((crtTime-startTime)*10+currentScore));
+		//life_display.showLife(std::to_string(life));
+
+		RECT scoreRect = {400,20,-1,-1};
+		RECT lifeRect = {20,20,-1,-1};
+
+		std::string scoreStr = "SCORE ";
+		scoreStr.append(std::to_string((crtTime-startTime)*10+currentScore));
+
+		std::string lifeStr = "LIFE ";
+		lifeStr.append(std::to_string(life));
+
+		if(scoreFont)
+			scoreFont->DrawText(g_pSprite, scoreStr.c_str(), scoreStr.length(), &scoreRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+
+		if(lifeFont)
+			lifeFont->DrawText(g_pSprite, lifeStr.c_str(), lifeStr.length(), &lifeRect,DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+	
+
+		//score_display.showScore(std::to_string((crtTime-startTime)*10+currentScore));
+		//life_display.showLife(std::to_string(life));
+		//if(pFont)
+			//pFont->DrawText(g_pSprite, "´Ð³×ÀÓ", -1, &textRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+
+
 		g_pSprite->End();
 		// End the scene
 		g_pd3dDevice->EndScene();

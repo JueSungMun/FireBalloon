@@ -7,7 +7,7 @@ private:
 	LPDIRECT3DTEXTURE9 Texture;
 	RECT Source;
 	D3DXVECTOR3 Position;
-	const D3DXVECTOR3 Center;
+	D3DXVECTOR3 Center;
 	int ani_inverval;
 	BOOL direction;
 	int id;
@@ -17,12 +17,12 @@ public:
 	Enemy(void);
 	~Enemy(void);
 	void initEnemy(RECT&);
-	void setTexture(LPDIRECT3DDEVICE9&, const char* );
+	void setTexture(LPDIRECT3DDEVICE9, const char* );
 	void setSource(RECT);
 	void setVisible(BOOL);
 	void setPosition(D3DXVECTOR3);
 	void setCenter(const D3DXVECTOR3);
-	void manageMoving(LPDIRECT3DDEVICE9&, int);
+	void manageMoving(LPDIRECT3DDEVICE9, int);
 
 	int getID();
 	BOOL getVisible();

@@ -61,20 +61,19 @@ void Main_Scene::Initialize(HWND& hWnd)
 		MessageBox(NULL,_T("Load Error of Button texture"),NULL,NULL);
 	}
 				
-	if (!SUCCEEDED(D3DXCreateFont(gDevice->g_pd3dDevice, 40,30, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
-		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("¹ÙÅÁÃ¼"), &pFont)))
+	if (!SUCCEEDED(D3DXCreateFont(gDevice->g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("¸¼Àº °íµñ"), &pFont)))
 	{
 		MessageBox(NULL, _T("Load Error of Font from the System"), NULL, NULL);
 	}
 
-	if (!SUCCEEDED(hEditWnd = CreateWindow(_T("edit"), _T(""), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 0,
-		400, 200, 25, hWnd, (HMENU) EDITBTN_ID, NULL, NULL)))
+	if (!SUCCEEDED(hEditWnd = CreateWindow(_T("edit"), _T(""), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 200, 400, 225, 25, hWnd, (HMENU) EDITBTN_ID, NULL, NULL)))
 	{
 		MessageBox(NULL, _T("Generation error of Edit Box"), NULL, NULL);
 	}
 
 	
-	if (!SUCCEEDED(btnWnd = CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 200,200,100,25,hWnd,(HMENU)BUTTON_ID,NULL,NULL)))
+	if (!SUCCEEDED(btnWnd = CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 450,400,100,25,hWnd,(HMENU)BUTTON_ID,NULL,NULL)))
 	{
 		MessageBox(NULL, _T("Generation error of Button"), NULL, NULL);
 	}
@@ -94,7 +93,7 @@ void Main_Scene::Draw(float gameTime)
 	rcSrcRect.top = 0;
 	
 
-	RECT textRect = {20,30,-1,-1};
+	RECT textRect = {100,393,-1,-1};
 
     if(spriter && texture)
 	{
@@ -102,7 +101,7 @@ void Main_Scene::Draw(float gameTime)
 		spriter->Draw(texture,&rcSrcRect,NULL, &position, color);
 		//spriter->Draw(NULL, &button, NULL, NULL, D3DCOLOR_ARGB(255,0,255,0));
 		if(pFont)
-			pFont->DrawText(spriter, _T("´Ğ³×ÀÓ"), -1, &textRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+			pFont->DrawText(spriter, _T("´Ğ³×ÀÓ"), -1, &textRect, DT_NOCLIP, D3DXCOLOR(1,1,1,1));
 		spriter->End();
 	}
 

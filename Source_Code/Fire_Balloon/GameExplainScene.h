@@ -10,7 +10,7 @@ private:
 	LPCWSTR background;
 public:
 	GameExplainScene();
-	~GameExplainScene();
-	void Initialize(HWND& hWnd);
-	void Draw(float gameTime);
+	virtual ~GameExplainScene();
+	virtual void Initialize(HWND& hWnd);
+	virtual void Draw(float gameTime);
 };

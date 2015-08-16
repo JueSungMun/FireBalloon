@@ -1,10 +1,8 @@
-﻿빌드 시작: 2015-08-14 오후 9:39:17
+﻿빌드 시작: 2015-08-17 오전 1:37:56
      1>2 노드의 "C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Test_Modul_By_Dol\Test_Modul_By_Dol.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Enemy.cpp main.cpp
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\\Library\\Include /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-         Enemy.cpp
-         코드를 생성하고 있습니다...
        Link:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\\Library\\Lib\\x86\\ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jue\Documents\Visual Studio 2012\Projects\FireBalloon\Source_Code\Debug\Test_Modul_By_Dol.lib" /MACHINE:X86 Debug\Enemy.obj
          Debug\main.obj
@@ -15,4 +13,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:07.99
+경과 시간: 00:00:04.94

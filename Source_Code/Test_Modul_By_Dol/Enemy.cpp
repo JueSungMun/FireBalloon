@@ -1,6 +1,6 @@
 #include "All_Header.h"
 
-Enemy::Enemy(void)
+Enemy::Enemy(void) : Visible(true)
 {
 }
 
@@ -8,7 +8,7 @@ Enemy::~Enemy(void)
 {
 }
 
-Enemy::Enemy(int setId)
+Enemy::Enemy(int setId) : Visible(true)
 {
 	id = setId;
 }
@@ -23,10 +23,16 @@ void Enemy::initEnemy(RECT &inputX)
 	direction = TRUE;
 	Position.x = 1;
 	Position.y = 0;
+	Position.z = 0;
+	Center.x = 0;
+	Center.y = 0;
+	Center.z = 0;
+
+	//Position.z = 1;
 	ani_inverval =0;
 }
 
-void Enemy::manageMoving(LPDIRECT3DDEVICE9& g_pd3dDevice, int offset)
+void Enemy::manageMoving(LPDIRECT3DDEVICE9 g_pd3dDevice, int offset)
 {
 	if(direction)
 	{
@@ -39,7 +45,8 @@ void Enemy::manageMoving(LPDIRECT3DDEVICE9& g_pd3dDevice, int offset)
 	{
 		setTexture(g_pd3dDevice, IMG_BIRD_LEFT);
 		invSineMoving(offset);
-		if(Position.x+40 <= SCREEN_WIDTH)
+		//if(Position.x+40 <= SCREEN_WIDTH)
+		if(Position.x <= 0)
 			direction=TRUE;
 	}
 }
@@ -136,7 +143,7 @@ void Enemy::setVisible(BOOL isVisible)
 {
 	Visible = isVisible;
 }
-void Enemy::setTexture(LPDIRECT3DDEVICE9& g_device, const char* img_source)
+void Enemy::setTexture(LPDIRECT3DDEVICE9 g_device, const char* img_source)
 {
 	D3DXCreateTextureFromFileEx( g_device, img_source, 
 		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, NULL, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,

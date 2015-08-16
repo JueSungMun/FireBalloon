@@ -109,7 +109,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		case WM_COMMAND : 
 			switch(LOWORD(wParam))
 			{
-			case BUTTON_ID:
+			case obj->BUTTON_ID:
 				if(!_tcscmp(obj->GetEditWindowText(),_T("")))
 					MessageBox(hWnd, _T("닉네임을 입력해주세요"), _T("Button"), MB_OK);
 				else

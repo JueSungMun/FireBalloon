@@ -39,6 +39,12 @@
     <ClCompile Include="User.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphic_Lib.h">
@@ -60,6 +66,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="All_Header.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

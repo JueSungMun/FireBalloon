@@ -22,8 +22,8 @@ private:
 public:
 	Main_Scene();
 	Main_Scene(int windth, int height);
-	~Main_Scene();
-	void Initialize(HWND& hWnd);
-	void Draw(float gameTime);
-	LPCWSTR GetEditWindowText();
+	virtual ~Main_Scene();
+	virtual void Initialize(HWND& hWnd);
+	virtual void Draw(float gameTime);
+	virtual LPCWSTR GetEditWindowText();
 };
