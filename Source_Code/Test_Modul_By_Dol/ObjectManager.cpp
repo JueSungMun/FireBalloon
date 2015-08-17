@@ -1,17 +1,41 @@
 #include "All_Header.h"
 
-
 ObjectManager::ObjectManager(void)
 {
+	for(int i=0; i<MAX_ENEMY; i++)
+		isAlive[i] = FALSE;
 }
 
 ObjectManager::~ObjectManager(void)
 {
 }
 
-void ObjectManager::insertObj(int id)
+void ObjectManager::setAlive(int idx, BOOL isalive)
 {
-	v1.push_back(Enemy(id));
+	isAlive[idx] = isalive;
+}
+void ObjectManager::insertObj()
+{
+	for(int i=0; i<MAX_ENEMY; i++)
+	{
+		if(!isAlive[i])
+		{
+			RECT rct;
+			rct.left = BIRD_RECT_LEFT; 
+			rct.top = BIRD_RECT_TOP; 
+			rct.right = BIRD_RECT_RIGHT; 
+			rct.bottom = BIRD_RECT_BOTTOM;
+			v1.push_back(Enemy(i));
+			isAlive[i]=TRUE;
+			this->getEnemy(i).initEnemy(rct);
+			break;
+		}
+	}
+}
+
+BOOL ObjectManager::getAlive(int idx)
+{
+	return isAlive[idx];
 }
 
 void ObjectManager::deleteObj(int id)
@@ -37,8 +61,8 @@ Enemy& ObjectManager::getEnemy(int id)
 			}
 			else
 				iter++;
-		}/*
-	return NULL;*/
+		}
+	//return NULL;
 }
 
 std::list<Enemy> ObjectManager::getEnemyList()

@@ -13,7 +13,7 @@ D3DXVECTOR3 vecPosition;
 D3DXVECTOR3 vecPosBullet;
 D3DXVECTOR3 vecPosBG;
 
-time_t startTime, goaltime;
+time_t startTime, goaltime, currentTime;
 
 struct Image 
 {
@@ -31,6 +31,7 @@ TextDisplay score_display;
 TextDisplay life_display;
 int life = 200;
 int currentScore =0;
+int currentEnemyNum=0;
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 HRESULT InitD3D( HWND hWnd );
 LPD3DXFONT scoreFont;
@@ -64,29 +65,13 @@ void InitDX(void)
 	vecPosBG.z = .0f;
 
 	// 적 이미지 초기화
-	//RECT rct;
-	//rct.left = 0; rct.top=0; rct.right=81; rct.bottom=56;
 	ZeroMemory(&om, sizeof(ObjectManager));
 	om = new ObjectManager;
-	om->insertObj(0);
-	om->insertObj(1);
-	om->insertObj(2);
-	RECT rct;
-	rct.left = BIRD_RECT_LEFT; 
-	rct.top = BIRD_RECT_TOP; 
-	rct.right = BIRD_RECT_RIGHT; 
-	rct.bottom = BIRD_RECT_BOTTOM;
-	om->getEnemy(0).initEnemy(rct);
-	om->getEnemy(1).initEnemy(rct);
-	om->getEnemy(2).initEnemy(rct);
-//	for(int i=0; i<5; i++)
-//		enemyArray[i].initEnemy(rct);
 	
-
 	// 골라인 초기화
 	ZeroMemory(&g_GoalLine, sizeof(g_GoalLine));
-	g_GoalLine.Source.left=0;
-	g_GoalLine.Source.top=0;
+	g_GoalLine.Source.left = 0;
+	g_GoalLine.Source.top = 0;
 	g_GoalLine.Source.right = 600;
 	g_GoalLine.Source.bottom = 40;
 	g_GoalLine.Visible = TRUE;
@@ -115,8 +100,6 @@ void LoadData(void)
 		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "바탕체", &scoreFont);
 	D3DXCreateFont(g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
 		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "바탕체", &lifeFont);
-	//for(int i=0; i<5; i++)
-	//	enemyArray[i].setTexture(g_pd3dDevice, IMG_BIRD_RIGHT);
 }
 
 void Initilize(void)
@@ -161,6 +144,14 @@ VOID Cleanup()
 		g_pd3dDevice->Release();
 	if( g_pD3D != NULL )       
 		g_pD3D->Release();
+	if( om != NULL )
+		delete om;
+}
+
+VOID GeneratingEnemy()
+{
+	om->insertObj();
+	currentEnemyNum++;
 }
 
 //-----------------------------------------------------------------------------
@@ -172,7 +163,6 @@ VOID Render()
 	RECT rcSrcRect;
 	RECT bgRect;
 	D3DXVECTOR3 vecCenter;
-	//D3DXVECTOR3 vecPosition;
 
 	static int offset =0;
 
@@ -187,34 +177,43 @@ VOID Render()
 
 	srand((unsigned int)time(NULL));
 	
-	
-	om->getEnemy(0).manageMoving(g_pd3dDevice, 100);
-	om->getEnemy(1).manageMoving(g_pd3dDevice, 200);
-	om->getEnemy(2).manageMoving(g_pd3dDevice, 300);
+	if(currentEnemyNum < MAX_ENEMY )
+	{
+		if(GetTickCount() %60==0)
+			GeneratingEnemy();
+	}
 
 	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 7.0f;
 	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 7.0f;
 	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 5.0f;
 	if (GetKeyState(VK_DOWN) & 0x80000000) 	vecPosition.y += 10.0f;
 
-	// 충돌체크
-	// 보이는 적중에 부딪히면 파괴
+	if(currentEnemyNum>0)
+	{	
+		for(int i=0; i<currentEnemyNum; i++)
+			if(om->getAlive(i))
+			{
+				om->getEnemy(i).manageMoving(g_pd3dDevice, i*100+100);
 	
-	for(int i=0; i<MAX_ENEMY; i++)
-		if(om->getEnemy(i).getVisible())
-		{
-			RECT* source = om->getEnemy(i).getSource();
-			D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
-			if(vecPosition.x < pos->x + source->right
-				&&pos->x < vecPosition.x + rcSrcRect.right
-				&&vecPosition.y < pos->y + source->bottom
-				&&pos->y < vecPosition.y + rcSrcRect.bottom)
-			{		
-				om->getEnemy(i).setVisible(FALSE);
-				currentScore += 100;
-				life -= 10;
-			}	
-		}
+		// 충돌체크
+		// 보이는 적중에 부딪히면 파괴	
+		
+				RECT* source = om->getEnemy(i).getSource();
+				D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
+				if(vecPosition.x < pos->x + source->right
+					&&pos->x < vecPosition.x + rcSrcRect.right
+					&&vecPosition.y < pos->y + source->bottom
+					&&pos->y < vecPosition.y + rcSrcRect.bottom)
+				{		
+					//om->getEnemy(i).setVisible(FALSE);
+					currentScore += 100;
+					life -= 10;
+					currentEnemyNum--;
+					om->setAlive(i, FALSE);
+					om->deleteObj(i);
+				}	
+			}
+	}
 
 	if(life<=0)
 	{
@@ -273,23 +272,7 @@ VOID Render()
 		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
 		offset++;
 		offset = offset%SCREEN_HEIGHT;
-
-		/*
-		bgRect.left=0;
-		bgRect.right=600;
-
-		bgRect.top=900-offset;
-		bgRect.bottom=900;
-		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
-
-		//bottom sprite
-		bgRect.top=0;
-		bgRect.bottom=SCREEN_HEIGHT-offset;
-		D3DXVECTOR3 vecPosBG2(0,(float)offset,0);
-		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
-		offset=offset%600;
-		*/
-		
+				
 		//시작하고 10초뒤에 골라인 올라옴
 		time_t crtTime;
 		time(&crtTime);
@@ -299,11 +282,14 @@ VOID Render()
 			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
 		}
 		
-		for(int i=0; i<MAX_ENEMY; i++)
+		//적 그림
+		if(currentEnemyNum > 0)
+		for(int i=0; i<currentEnemyNum; i++)
 		{
-			if(om->getEnemy(i).getVisible() == TRUE)
+			if(om->getAlive(i) == TRUE)
 				g_pSprite->Draw( om->getEnemy(i).getTexture(), om->getEnemy(i).getSource(), om->getEnemy(i).getCenter(), om->getEnemy(i).getPosition(), 0xffffffff );
 		}
+
 		// 골라인과 플레이어가 만나면 
 		if ( g_GoalLine.Position.y < vecPosition.y )
 		{
@@ -321,13 +307,7 @@ VOID Render()
 		}*/
 
 		g_pSprite->Draw(g_pTexture, &rcSrcRect, &vecCenter, &vecPosition, 0xffffffff);
-		//g_pSprite->End();
 		
-	//	g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
-	//	D3DXCreateTextureFromFileInMemory(g_pd3dDevice,(LPCVOID)life,100,&g_pBackground);
-		//score_display.showScore(std::to_string((crtTime-startTime)*10+currentScore));
-		//life_display.showLife(std::to_string(life));
-
 		RECT scoreRect = {400,20,-1,-1};
 		RECT lifeRect = {20,20,-1,-1};
 
@@ -343,13 +323,6 @@ VOID Render()
 		if(lifeFont)
 			lifeFont->DrawText(g_pSprite, lifeStr.c_str(), lifeStr.length(), &lifeRect,DT_NOCLIP, D3DXCOLOR(0,0,0,1));
 	
-
-		//score_display.showScore(std::to_string((crtTime-startTime)*10+currentScore));
-		//life_display.showLife(std::to_string(life));
-		//if(pFont)
-			//pFont->DrawText(g_pSprite, "닉네임", -1, &textRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
-
-
 		g_pSprite->End();
 		// End the scene
 		g_pd3dDevice->EndScene();
