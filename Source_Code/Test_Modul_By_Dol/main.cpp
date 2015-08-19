@@ -24,7 +24,6 @@ struct Image
 	D3DXVECTOR3 Center;
 };
 
-//Enemy enemyArray[5];
 ObjectManager* om;
 Image g_GoalLine;
 TextDisplay score_display;
@@ -190,28 +189,32 @@ VOID Render()
 
 	if(currentEnemyNum>0)
 	{	
-		for(int i=0; i<currentEnemyNum; i++)
+		int tmp = currentEnemyNum;
+		for(int i=0; i<tmp; i++)
 			if(om->getAlive(i))
 			{
-				om->getEnemy(i).manageMoving(g_pd3dDevice, i*100+100);
-	
-		// 충돌체크
-		// 보이는 적중에 부딪히면 파괴	
-		
-				RECT* source = om->getEnemy(i).getSource();
-				D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
-				if(vecPosition.x < pos->x + source->right
-					&&pos->x < vecPosition.x + rcSrcRect.right
-					&&vecPosition.y < pos->y + source->bottom
-					&&pos->y < vecPosition.y + rcSrcRect.bottom)
-				{		
-					//om->getEnemy(i).setVisible(FALSE);
-					currentScore += 100;
-					life -= 10;
-					currentEnemyNum--;
-					om->setAlive(i, FALSE);
+				if( !(om->getEnemy(i).manageMoving(g_pd3dDevice, i*100+300)) ) 
+				{
+					//새의 위치가 위아래로 벗어나면 파괴
 					om->deleteObj(i);
-				}	
+					currentEnemyNum--;
+				} 
+				else 
+				{
+					// 충돌체크
+					// 보이는 적중에 부딪히면 파괴		
+					D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
+					if( vecPosition.x < pos->x + BIRD_RECT_RIGHT
+						&&pos->x < vecPosition.x + rcSrcRect.right
+						&&vecPosition.y < pos->y + BIRD_RECT_BOTTOM
+						&&pos->y < vecPosition.y + rcSrcRect.bottom)
+					{		
+						currentScore -= 50;
+						life -= 10;
+						currentEnemyNum--;
+						om->deleteObj(i);
+					}	
+				}
 			}
 	}
 
@@ -284,7 +287,7 @@ VOID Render()
 		
 		//적 그림
 		if(currentEnemyNum > 0)
-		for(int i=0; i<currentEnemyNum; i++)
+		for(int i=0; i<MAX_ENEMY; i++)
 		{
 			if(om->getAlive(i) == TRUE)
 				g_pSprite->Draw( om->getEnemy(i).getTexture(), om->getEnemy(i).getSource(), om->getEnemy(i).getCenter(), om->getEnemy(i).getPosition(), 0xffffffff );

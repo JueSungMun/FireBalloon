@@ -40,6 +40,6 @@
 #define BIRD_RECT_LEFT 0
 #define BIRD_RECT_TOP 0
 #define BIRD_RECT_RIGHT 81
-#define BIRD_RECT_BOTTOM 56
+#define BIRD_RECT_BOTTOM 51
 
 

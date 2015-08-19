@@ -13,6 +13,7 @@ ObjectManager::~ObjectManager(void)
 void ObjectManager::setAlive(int idx, BOOL isalive)
 {
 	isAlive[idx] = isalive;
+	this->getEnemy(idx).setVisible(isalive);
 }
 void ObjectManager::insertObj()
 {
@@ -44,7 +45,9 @@ void ObjectManager::deleteObj(int id)
 		{
 			if( id == iter->getID())
 			{
+				setAlive(id, FALSE);
 				v1.erase(iter++);
+				break;
 			}
 			else
 				iter++;
@@ -54,14 +57,14 @@ void ObjectManager::deleteObj(int id)
 Enemy& ObjectManager::getEnemy(int id)
 {
 	for(iter= v1.begin(); iter != v1.end();)
+	{
+		if( id == iter->getID())
 		{
-			if( id == iter->getID())
-			{
-				return *iter;
-			}
-			else
-				iter++;
+			return *iter;
 		}
+		else
+			iter++;
+	}
 	//return NULL;
 }
 

@@ -27,12 +27,13 @@ void Enemy::initEnemy(RECT &inputX)
 	Center.x = 0;
 	Center.y = 0;
 	Center.z = 0;
+	test_value =0;
 
 	//Position.z = 1;
 	ani_inverval =0;
 }
 
-void Enemy::manageMoving(LPDIRECT3DDEVICE9 g_pd3dDevice, int offset)
+BOOL Enemy::manageMoving(LPDIRECT3DDEVICE9 g_pd3dDevice, int offset)
 {
 	if(direction)
 	{
@@ -49,14 +50,28 @@ void Enemy::manageMoving(LPDIRECT3DDEVICE9 g_pd3dDevice, int offset)
 		if(Position.x <= 0)
 			direction=TRUE;
 	}
+
+	if(Position.y + BIRD_RECT_BOTTOM < 0 || Position.y > SCREEN_HEIGHT)
+	{
+		// 새의 위치가 위아래로 벗어나면 FALSE를 리턴하고 파괴시킴
+		return FALSE; 
+	}
+	return TRUE;
 }
 
 void Enemy::sineMoving(int offset)
 {
-	
 	Position.x += 2.0f;
-	Position.y = (float)(50*sin(Position.x*0.03)+offset);
-
+	if(test_value%2==0)
+	{
+		Position.y = (float)(50*sin(Position.x*0.03)+offset) - (Position.x)/6;
+		if(Position.x >= 207)
+			test_value++;
+	}
+	else
+	{
+		Position.y = (float)(150*sin(Position.x*0.03)+offset) - (Position.x)/6;
+	}
 	ani_inverval++;
 	if(ani_inverval%5==0)
 		if(Source.bottom < 306)
@@ -74,7 +89,7 @@ void Enemy::sineMoving(int offset)
 void Enemy::invSineMoving(int offset)
 {
 	Position.x -= 2.0f;
-	Position.y = (float)(50*sin(Position.x*0.03)+offset);
+	Position.y = (float)(50*sin(Position.x*0.03)+offset) + (Position.x)/3;
 
 	ani_inverval++;
 	if(ani_inverval%5==0)
@@ -100,7 +115,7 @@ LPDIRECT3DTEXTURE9& Enemy::getTexture()
 	return Texture;
 }
 
-BOOL Enemy::getVisible()
+BOOL Enemy::getVisible() const
 {
 	return Visible;
 }
