@@ -2,12 +2,15 @@
 #include "Main_Scene.h"
 #include "GameExplainScene.h"
 #include "GameScene.h"
+#include "User.h"
+#include "GameResultScene.h"
 
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int width, int height, HWND& hWnd);
 bool GenerateWindow(LPCWSTR className, LPCWSTR windowTitle, int x, int y, int width, int height, HWND& hWnd);
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 WNDCLASSEX wcex;
 Manage_Scene* obj;
+User* user;
 bool InitializeInput();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -31,9 +34,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if(msg.message == WM_QUIT) break;
 			else
 			{
-				if(obj->GetSceneNumber() == 3)
+				if(obj->GetSceneNumber() == obj->GAME_SCENE)
 				{
-					obj->Draw(0.0f);
+					obj->Draw(0.0f, *user);
+				}
+				
+				if (obj->GetGameState() && obj->GetSceneNumber() == obj->GAME_SCENE)
+				{
+					obj = new GameResultScene();
+					obj->Initialize(hWnd);
+					obj->Draw(0.0f, *user);
 				}
 			}
 		}
@@ -97,10 +107,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			return 0;
 			break;
 		case WM_LBUTTONDOWN : 
-			if(obj->GetSceneNumber() == 2)
+			if(obj->GetSceneNumber() == obj->GAME_EXPLAIN_SCENE)
 			{
 				delete obj;
 				obj = new GameScene();
+				obj->Initialize(hWnd);
+				obj->Draw(0.0f, *user);
+			}
+			else if(obj->GetSceneNumber() == obj->GAME_RESULT_SCENE)
+			{
+				delete obj;
+				obj = new Main_Scene();
 				obj->Initialize(hWnd);
 				obj->Draw(0.0f);
 			}
@@ -114,6 +131,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					MessageBox(hWnd, _T("닉네임을 입력해주세요"), _T("Button"), MB_OK);
 				else
 				{
+					user = new User(obj->GetEditWindowText());
 					delete obj;
 					obj = new GameExplainScene();
 					obj->Initialize(hWnd);
@@ -141,8 +159,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			{
 				if(raw->data.keyboard.Message == WM_KEYDOWN || raw->data.keyboard.Message == WM_SYSKEYDOWN)
 				{
-					if(raw->data.keyboard.VKey ==VK_SPACE)
+					if(raw->data.keyboard.VKey ==VK_SPACE || raw->data.keyboard.VKey == VK_RETURN)
 					{
+						if(obj->GetSceneNumber() == obj->GAME_RESULT_SCENE)
+						{
+							delete obj;
+							obj = new Main_Scene();
+							obj->Initialize(hWnd);
+							obj->Draw(0.0f);
+						}
 						//wchar_t sceneNum[10];
 						//_itow_s(obj->GetSceneNumber(), sceneNum, 10);
 						//MessageBox(NULL, sceneNum, NULL, NULL);
@@ -150,7 +175,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 						//obj = new Manage_Scene();
 						//obj->Initialize(hWnd);
 						//obj->Draw(0.0f);
-
 					}
 				}
 			}
@@ -175,20 +199,3 @@ bool InitializeInput()
 	}
 	return true;
 }
-
-/*
-void SelectScene()
-{
-	switch(obj->GetSceneNumber())
-	{
-	case obj->SCENE::TEMP_SCENE :
-		obj = new Manage_Scene();
-		break;
-	case obj->SCENE::MAIN_SCENE :
-		obj = new Main_Scene ();
-		break;
-	case obj->SCENE::GAME_SCENE :
-		break;
-	}
-}
-*/

@@ -14,13 +14,14 @@ class GameScene : public Manage_Scene
 {
 private:
 	int life;
+	int currentEnemyNum;
 	int currentScore;
-	int stage;
-	time_t startTime;
-	time_t goaltime;
-	ObjectManager* om;
+	int currentStage;
 	Image g_GoalLine;
-	D3DXVECTOR3 position;
+	time_t startTime;
+	time_t goalTime;
+	time_t prevTimer;
+	ObjectManager* om;
 	D3DCOLOR color;
 	LPD3DXSPRITE spriter;
 	LPDIRECT3DTEXTURE9 balloonTexture;
@@ -29,12 +30,13 @@ private:
 	LPD3DXFONT scoreFont;
 	LPD3DXFONT lifeFont;
 	LPD3DXFONT stageFont;
+	D3DXVECTOR3 position;
 	D3DXVECTOR3 vecPosBG;
 	D3DXVECTOR3 vecPosition;
-
+	void InitStage(int stage);
 public:
 	GameScene();
 	virtual ~GameScene();
 	virtual void Initialize(HWND& hWnd);
-	virtual void Draw(float gameTime);
+	virtual void Draw(float gameTime, User& user);
 };

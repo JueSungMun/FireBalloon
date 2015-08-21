@@ -11,6 +11,7 @@
 #include <strsafe.h>
 #include "Enemy.h"
 #include "ObjectManager.h"
+#include "User.h"
 
 #pragma warning( default : 4996 ) 
 #pragma comment(lib, "d3d9.lib")

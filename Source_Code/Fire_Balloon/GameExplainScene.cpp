@@ -8,7 +8,7 @@ GameExplainScene::GameExplainScene() : spriter(NULL), texture(NULL)
 
 	color = D3DCOLOR_ARGB(255,255,255,255);
 	background = _T("..\\Resource\\game_explain_view.png");
-	SetSceneNumber(2);
+	SetSceneNumber(GAME_EXPLAIN_SCENE);
 }
 
 GameExplainScene::~GameExplainScene()

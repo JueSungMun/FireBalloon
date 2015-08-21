@@ -1,9 +1,15 @@
 #include "All_Header.h"
 
-ObjectManager::ObjectManager(void)
+ObjectManager::ObjectManager(void) : stageNum(4), MAXIMUM_ENEMY(0)
 {
-	for(int i=0; i<MAX_ENEMY; i++)
-		isAlive[i] = FALSE;
+	//for(int i=0; i<MAX_ENEMY; i++)
+		//isAlive[i] = FALSE;
+	Initialize();
+}
+
+ObjectManager::ObjectManager(int stage) : stageNum(stage)
+{
+	Initialize();
 }
 
 ObjectManager::~ObjectManager(void)
@@ -15,9 +21,11 @@ void ObjectManager::setAlive(int idx, BOOL isalive)
 	isAlive[idx] = isalive;
 	this->getEnemy(idx).setVisible(isalive);
 }
+
 void ObjectManager::insertObj()
 {
-	for(int i=0; i<MAX_ENEMY; i++)
+	//for(int i=0; i<MAX_ENEMY; i++)
+	for(int i=0; i<ManageMaxEnemy(); i++)
 	{
 		if(!isAlive[i])
 		{
@@ -46,6 +54,7 @@ void ObjectManager::deleteObj(int id)
 			if( id == iter->getID())
 			{
 				setAlive(id, FALSE);
+				
 				v1.erase(iter++);
 				break;
 			}
@@ -68,7 +77,54 @@ Enemy& ObjectManager::getEnemy(int id)
 	//return NULL;
 }
 
-std::list<Enemy> ObjectManager::getEnemyList()
+std::list<Enemy>& ObjectManager::getEnemyList()
 {
 	return v1;
+}
+
+void ObjectManager::IncreaseStageNumber()
+{
+	stageNum++;
+}
+
+int ObjectManager::ManageMaxEnemy()
+{
+	switch (stageNum)
+	{
+	case 1:
+		return ObjectManager::ENEMY::STAGE1;
+		break;
+	case 2:
+		return ObjectManager::ENEMY::STAGE2;
+		break;
+	case 3:
+		return ObjectManager::ENEMY::STAGE3;
+		break;
+	case 4:
+		return ObjectManager::ENEMY::STAGE4;
+		break;
+	case 5:
+		return ObjectManager::ENEMY::STAGE5;
+		break;
+	}
+	return 0;
+}
+
+bool ObjectManager::Initialize()
+{
+	MAXIMUM_ENEMY = ManageMaxEnemy();
+	isAlive = new BOOL[MAXIMUM_ENEMY];
+	for(int i=0; i<MAXIMUM_ENEMY; i++)
+		isAlive[i] = FALSE;
+	return true;
+}
+
+int ObjectManager::GetStageNumber()
+{
+	return stageNum;
+}
+
+int ObjectManager::GetMaxEnemyNumber()
+{
+	return MAXIMUM_ENEMY;
 }

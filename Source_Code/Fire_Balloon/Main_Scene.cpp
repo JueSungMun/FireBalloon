@@ -8,8 +8,7 @@ Main_Scene::Main_Scene() : spriter(NULL), texture(NULL), pFont(NULL)
 
 	color = D3DCOLOR_ARGB(255,255,255,255);
 	background = _T("..\\Resource\\main_screen_background.jpg");
-	SetSceneNumber(1);
-	button = new Button(0,0,142,92);
+	SetSceneNumber(MAIN_SCENE);
 }
 
 Main_Scene::Main_Scene(int width, int height)
@@ -56,11 +55,6 @@ void Main_Scene::Initialize(HWND& hWnd)
 		MessageBox(NULL,_T("Error on generating spriter"),NULL,NULL);
 	}
 
-	if (!SUCCEEDED(button->Initialize(gDevice->g_pd3dDevice, _T("..\\Resource\\confirm_button1.png"))))
-	{
-		MessageBox(NULL,_T("Load Error of Button texture"),NULL,NULL);
-	}
-				
 	if (!SUCCEEDED(D3DXCreateFont(gDevice->g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
 		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("¸¼Àº °íµñ"), &pFont)))
 	{
@@ -73,7 +67,7 @@ void Main_Scene::Initialize(HWND& hWnd)
 	}
 
 	
-	if (!SUCCEEDED(btnWnd = CreateWindow(_T("button"),_T("Click Me"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 450,400,100,25,hWnd,(HMENU)BUTTON_ID,NULL,NULL)))
+	if (!SUCCEEDED(btnWnd = CreateWindow(_T("button"),_T("È®ÀÎ"),WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 450,400,100,25,hWnd,(HMENU)BUTTON_ID,NULL,NULL)))
 	{
 		MessageBox(NULL, _T("Generation error of Button"), NULL, NULL);
 	}
@@ -103,11 +97,6 @@ void Main_Scene::Draw(float gameTime)
 		if(pFont)
 			pFont->DrawText(spriter, _T("´Ğ³×ÀÓ"), -1, &textRect, DT_NOCLIP, D3DXCOLOR(1,1,1,1));
 		spriter->End();
-	}
-
-	if(button->IsInitialized())
-	{
-		//button->Draw();
 	}
 
 	gDevice->End();

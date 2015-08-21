@@ -42,4 +42,4 @@
 #define BIRD_RECT_RIGHT 81
 #define BIRD_RECT_BOTTOM 51
 
-
+using namespace std;

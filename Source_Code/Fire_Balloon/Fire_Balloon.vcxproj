@@ -69,18 +69,20 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\\Library\\Include\\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\\Library\\Lib\\x86\\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameExplainScene.cpp" />
+    <ClCompile Include="GameResultScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Graphic_Lib.cpp" />
     <ClCompile Include="main.cpp" />
@@ -91,9 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="All_Header.h" />
-    <ClInclude Include="Button.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameExplainScene.h" />
+    <ClInclude Include="GameResultScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Graphic_Lib.h" />
     <ClInclude Include="Main_Scene.h" />

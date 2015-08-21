@@ -1,6 +1,6 @@
 #include "Manage_Scene.h"
 
-Manage_Scene::Manage_Scene() : sceneNumber(0) , isInitialed(false), windowWidth(600), windowHeight(700)
+Manage_Scene::Manage_Scene() : sceneNumber(0) , isInitialed(false), windowWidth(600), windowHeight(700), isGameOver (false)
 {
 
 }
@@ -71,6 +71,16 @@ void Manage_Scene::Draw(float gameTime)
 	gDevice->Present();
 }
 
+void Manage_Scene::Draw(float gameTime, User& user)
+{
+	gDevice->Clear(D3DCOLOR_XRGB(0,0,255));
+	gDevice->Begin();
+
+
+	gDevice->End();
+	gDevice->Present();
+}
+
 bool Manage_Scene::Initialized()
 {
 	return isInitialed;
@@ -90,4 +100,14 @@ int Manage_Scene::GetWindowWidth()
 int Manage_Scene::GetWindowHeight()
 {
 	return windowHeight;
+}
+
+void Manage_Scene::SetGameOver(bool state)
+{
+	isGameOver = state;
+}
+
+bool Manage_Scene::GetGameState()
+{
+	return isGameOver;
 }

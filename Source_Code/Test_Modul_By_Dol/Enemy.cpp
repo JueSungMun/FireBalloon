@@ -35,6 +35,7 @@ void Enemy::initEnemy(RECT &inputX)
 
 BOOL Enemy::manageMoving(LPDIRECT3DDEVICE9 g_pd3dDevice, int offset)
 {
+	//cout<< id << "번째 새의 위치-> x:"<<Position.x<<" y:"<<Position.y <<endl;
 	if(direction)
 	{
 		setTexture(g_pd3dDevice, IMG_BIRD_RIGHT);

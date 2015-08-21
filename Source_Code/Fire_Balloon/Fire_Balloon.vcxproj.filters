@@ -27,9 +27,6 @@
     <ClCompile Include="Main_Scene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="GameExplainScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -45,6 +42,9 @@
     <ClCompile Include="ObjectManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameResultScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphic_Lib.h">
@@ -54,9 +54,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Main_Scene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameExplainScene.h">
@@ -75,6 +72,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="All_Header.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameResultScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

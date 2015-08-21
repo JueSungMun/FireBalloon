@@ -4,7 +4,6 @@
 */
 
 #include "Manage_Scene.h"
-#include "Button.h"
 #include <atlbase.h>
 
 class Main_Scene : public Manage_Scene
@@ -18,7 +17,7 @@ private:
 	LPD3DXFONT pFont;
 	LPDIRECT3DTEXTURE9 texture;
 	LPCWSTR background;
-	Button* button;
+
 public:
 	Main_Scene();
 	Main_Scene(int windth, int height);

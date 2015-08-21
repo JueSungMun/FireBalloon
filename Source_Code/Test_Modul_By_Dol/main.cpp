@@ -13,7 +13,8 @@ D3DXVECTOR3 vecPosition;
 D3DXVECTOR3 vecPosBullet;
 D3DXVECTOR3 vecPosBG;
 
-time_t startTime, goaltime, currentTime;
+time_t startTime, goaltime;
+time_t prevTimer, nextTimer;
 
 struct Image 
 {
@@ -31,10 +32,13 @@ TextDisplay life_display;
 int life = 200;
 int currentScore =0;
 int currentEnemyNum=0;
+int currentStage =1;
+bool isStageClear = false;
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 HRESULT InitD3D( HWND hWnd );
 LPD3DXFONT scoreFont;
 LPD3DXFONT lifeFont;
+LPD3DXFONT stageFont;
 
 void InitWin(void)
 {
@@ -49,26 +53,20 @@ void InitWin(void)
 		WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
 		NULL, NULL, g_wc.hInstance, NULL );
 }
-
-void InitDX(void)
+void initStage(int stage)
 {
-	InitD3D(g_hWnd);
-	D3DXCreateSprite(g_pd3dDevice, &g_pSprite);
-
+	//유저위치초기화
 	vecPosition.x = SCREEN_WIDTH/2;
 	vecPosition.y = SCREEN_HEIGHT/8;
 	vecPosition.z = .0f;
-
 	vecPosBG.x = .0f;
 	vecPosBG.y = .0f;
 	vecPosBG.z = .0f;
 
 	// 적 이미지 초기화
-	ZeroMemory(&om, sizeof(ObjectManager));
-	om = new ObjectManager;
-	
+	om = new ObjectManager(stage);
+
 	// 골라인 초기화
-	ZeroMemory(&g_GoalLine, sizeof(g_GoalLine));
 	g_GoalLine.Source.left = 0;
 	g_GoalLine.Source.top = 0;
 	g_GoalLine.Source.right = 600;
@@ -77,9 +75,17 @@ void InitDX(void)
 	g_GoalLine.Position.x = 0;
 	g_GoalLine.Position.y = 700;
 
+	//종료시간 초기화
 	time(&startTime);
-	goaltime = startTime+50;
+	goaltime = startTime+(3*stage);
+}
 
+void InitDX(void)
+{
+	InitD3D(g_hWnd);
+	D3DXCreateSprite(g_pd3dDevice, &g_pSprite);
+	ZeroMemory(&om, sizeof(ObjectManager));
+	ZeroMemory(&g_GoalLine, sizeof(g_GoalLine));
 	score_display.initScore(g_hWnd);
 	life_display.initLife(g_hWnd);
 }
@@ -99,6 +105,8 @@ void LoadData(void)
 		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "바탕체", &scoreFont);
 	D3DXCreateFont(g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
 		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "바탕체", &lifeFont);
+	D3DXCreateFont(g_pd3dDevice, 30,15, 255, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "바탕체", &stageFont);
 }
 
 void Initilize(void)
@@ -106,6 +114,7 @@ void Initilize(void)
 	InitWin();
 	InitDX();
 	LoadData();
+	initStage(1);
 
 	// Show the window
 	ShowWindow( g_hWnd, SW_SHOWDEFAULT );
@@ -137,7 +146,7 @@ HRESULT InitD3D( HWND hWnd )
 //-----------------------------------------------------------------------------
 VOID Cleanup()
 {
-	if ( g_pSprite != NULL)
+	if (g_pSprite != NULL)
 		g_pSprite->Release();
 	if( g_pd3dDevice != NULL ) 
 		g_pd3dDevice->Release();
@@ -147,192 +156,211 @@ VOID Cleanup()
 		delete om;
 }
 
-VOID GeneratingEnemy()
-{
-	om->insertObj();
-	currentEnemyNum++;
-}
-
 //-----------------------------------------------------------------------------
 // Name: Render()
 // Desc: Draws the scene
 //-----------------------------------------------------------------------------
 VOID Render()
 {
-	RECT rcSrcRect;
-	RECT bgRect;
-	D3DXVECTOR3 vecCenter;
-
-	static int offset =0;
-
-	rcSrcRect.left = 0;
-	rcSrcRect.top = 0;
-	rcSrcRect.right = 59;
-	rcSrcRect.bottom = 88;
-
-	vecCenter.x = .0f;
-	vecCenter.y = .0f;
-	vecCenter.z = .0f;
-
-	srand((unsigned int)time(NULL));
-	
-	if(currentEnemyNum < MAX_ENEMY )
+	if(!isStageClear)
 	{
-		if(GetTickCount() %60==0)
-			GeneratingEnemy();
-	}
+		RECT rcSrcRect;
+		RECT bgRect;
+		D3DXVECTOR3 vecCenter;
 
-	if (GetKeyState(VK_LEFT) & 0x80000000) 	vecPosition.x -= 7.0f;
-	if (GetKeyState(VK_RIGHT) & 0x80000000) vecPosition.x += 7.0f;
-	if (GetKeyState(VK_UP) & 0x80000000) vecPosition.y -= 5.0f;
-	if (GetKeyState(VK_DOWN) & 0x80000000) 	vecPosition.y += 10.0f;
+		static int offset =0;
 
-	if(currentEnemyNum>0)
-	{	
-		int tmp = currentEnemyNum;
-		for(int i=0; i<tmp; i++)
-			if(om->getAlive(i))
+		rcSrcRect.left = 0;
+		rcSrcRect.top = 0;
+		rcSrcRect.right = 59;
+		rcSrcRect.bottom = 88;
+
+		vecCenter.x = .0f;
+		vecCenter.y = .0f;
+		vecCenter.z = .0f;
+
+		srand((unsigned int)time(NULL));
+	
+		if( currentEnemyNum < om->ManageMaxEnemy() )
+		{
+			if(GetTickCount()%60==0)
 			{
-				if( !(om->getEnemy(i).manageMoving(g_pd3dDevice, i*100+300)) ) 
+				om->insertObj();
+				currentEnemyNum++;
+			}
+		}
+
+		if ((GetKeyState(VK_LEFT) & 0x80000000) && vecPosition.x > 0) 	
+			vecPosition.x -= 7.0f;
+		if ((GetKeyState(VK_RIGHT) & 0x80000000) && vecPosition.x+rcSrcRect.right < SCREEN_WIDTH) 
+			vecPosition.x += 7.0f;
+		if ((GetKeyState(VK_UP) & 0x80000000) && vecPosition.y > 0 ) 
+			vecPosition.y -= 5.0f;
+		if ((GetKeyState(VK_DOWN) & 0x80000000) && vecPosition.y+rcSrcRect.bottom < SCREEN_HEIGHT) 	
+			vecPosition.y += 10.0f;
+	
+		if(currentEnemyNum>=0)
+		{	
+			for(int i=0; i<om->ManageMaxEnemy(); i++)
+				if(om->getAlive(i))
 				{
-					//새의 위치가 위아래로 벗어나면 파괴
-					om->deleteObj(i);
-					currentEnemyNum--;
-				} 
-				else 
-				{
-					// 충돌체크
-					// 보이는 적중에 부딪히면 파괴		
-					D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
-					if( vecPosition.x < pos->x + BIRD_RECT_RIGHT
-						&&pos->x < vecPosition.x + rcSrcRect.right
-						&&vecPosition.y < pos->y + BIRD_RECT_BOTTOM
-						&&pos->y < vecPosition.y + rcSrcRect.bottom)
-					{		
-						currentScore -= 50;
-						life -= 10;
-						currentEnemyNum--;
+					if( !(om->getEnemy(i).manageMoving(g_pd3dDevice, i*100+100)) ) 
+					{
+						//새의 위치가 위아래로 벗어나면 파괴
 						om->deleteObj(i);
-					}	
+						currentEnemyNum--;
+					} 
+					else 
+					{
+						// 충돌체크 보이는 적중에 부딪히면 파괴		
+						D3DXVECTOR3* pos = om->getEnemy(i).getPosition();
+						if( vecPosition.x < pos->x + BIRD_RECT_RIGHT
+							&&pos->x < vecPosition.x + rcSrcRect.right
+							&&vecPosition.y < pos->y + BIRD_RECT_BOTTOM
+							&&pos->y < vecPosition.y + rcSrcRect.bottom)
+						{	
+							currentScore -= 50;
+							if(currentScore < 0)
+								currentScore =0;							
+							life -= 10;
+							om->deleteObj(i);
+							currentEnemyNum--;
+						}	
+					}
+				}
+		}
+
+		if(life<=0)
+		{
+			MessageBox(g_hWnd, "Oops!","You are dead!", MB_OK);
+			exit(1);
+		}
+		//총알발사
+		/*if (GetKeyState(0x5a) & 0x80000000) 
+		{
+			for (INT i=0; i<100; ++i)
+			{
+				if ( g_Bullet[i].Visible == FALSE )
+				{
+					g_Bullet[i].Visible = TRUE;
+					g_Bullet[i].Position.x = vecPosition.x;
+					g_Bullet[i].Position.y = vecPosition.y;
+					break;
 				}
 			}
-	}
-
-	if(life<=0)
-	{
-		MessageBox(g_hWnd, "Oops!","You are dead!", MB_OK);
-		exit(1);
-	}
-	//총알발사
-	/*if (GetKeyState(0x5a) & 0x80000000) 
-	{
-		for (INT i=0; i<100; ++i)
+		}*/
+		//총알속도
+		/*for (INT i=0; i<100; ++i)
 		{
-			if ( g_Bullet[i].Visible == FALSE )
-			{
-				g_Bullet[i].Visible = TRUE;
-				g_Bullet[i].Position.x = vecPosition.x;
-				g_Bullet[i].Position.y = vecPosition.y;
-				break;
-			}
-		}
-	}*/
-	//총알속도
-	/*for (INT i=0; i<100; ++i)
-	{
-		if ( g_Bullet[i].Visible == TRUE )	g_Bullet[i].Position.y -= 20.0f;
+			if ( g_Bullet[i].Visible == TRUE )	g_Bullet[i].Position.y -= 20.0f;
 
-		if ( g_Bullet[i].Position.y < -40.0f )	g_Bullet[i].Visible = FALSE;	
-	}*/
-
-	//if ( vecPosBullet.y > -40.0f )
-	//{
-	//	vecPosBullet.y -= 5.0f;
-	//}
-
-	// Clear the backbuffer to a blue color
-	//g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(100,100,255), 1.0f, 0 );
-
-	// Begin the scene
-	if( SUCCEEDED( g_pd3dDevice->BeginScene() ) )
-	{
-		g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
-		//g_pSprite->Draw(g_pBullet, &rcSrcBullet, &vecCenter, &vecPosBullet, 0xffffffff);
-
-		//배경그리기
-		//top sprite
-		bgRect.left = 0;
-		bgRect.right = 600;
-		bgRect.top = 0;
-		bgRect.bottom = SCREEN_HEIGHT;
-		vecPosBG.y = -(float)offset;
-		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
-
-		bgRect.top = 0;
-		bgRect.bottom = offset;
-		
-		D3DXVECTOR3 vecPosBG2(0,(float)(SCREEN_HEIGHT-offset),0);
-		g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
-		offset++;
-		offset = offset%SCREEN_HEIGHT;
-				
-		//시작하고 10초뒤에 골라인 올라옴
-		time_t crtTime;
-		time(&crtTime);
-		if(goaltime < crtTime)
-		{
-			g_GoalLine.Position.y -= 3.0f;
-			g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
-		}
-		
-		//적 그림
-		if(currentEnemyNum > 0)
-		for(int i=0; i<MAX_ENEMY; i++)
-		{
-			if(om->getAlive(i) == TRUE)
-				g_pSprite->Draw( om->getEnemy(i).getTexture(), om->getEnemy(i).getSource(), om->getEnemy(i).getCenter(), om->getEnemy(i).getPosition(), 0xffffffff );
-		}
-
-		// 골라인과 플레이어가 만나면 
-		if ( g_GoalLine.Position.y < vecPosition.y )
-		{
-			// 스테이지 클리어
-			MessageBox(NULL, "STAGE CLEAR!", "Congraturations!", MB_OK);
-			exit(0);
-		}
-		//총알그려줌
-		/*for ( INT i=0; i<100; ++i )
-		{
-			if ( g_Bullet[i].Visible == TRUE )
-			{
-				g_pSprite->Draw(g_Bullet[i].Texture, &g_Bullet[i].Source, &g_Bullet[i].Center, &g_Bullet[i].Position, 0xffffffff);
-			}
+			if ( g_Bullet[i].Position.y < -40.0f )	g_Bullet[i].Visible = FALSE;	
 		}*/
 
-		g_pSprite->Draw(g_pTexture, &rcSrcRect, &vecCenter, &vecPosition, 0xffffffff);
+		//if ( vecPosBullet.y > -40.0f )
+		//{
+		//	vecPosBullet.y -= 5.0f;
+		//}
+
+		// Clear the backbuffer to a blue color
+		//g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(100,100,255), 1.0f, 0 );
+
+		// Begin the scene
+		if( SUCCEEDED( g_pd3dDevice->BeginScene() ) )
+		{
+			g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
+
+			//배경그리기
+			//top sprite
+			bgRect.left = 0;
+			bgRect.right = SCREEN_WIDTH;
+			bgRect.top = 0;
+			bgRect.bottom = SCREEN_HEIGHT;
+			vecPosBG.y = -(float)offset;
+			g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG, 0xFFFFFFFF);
+
+			bgRect.top = 0;
+			bgRect.bottom = offset;
 		
-		RECT scoreRect = {400,20,-1,-1};
-		RECT lifeRect = {20,20,-1,-1};
+			D3DXVECTOR3 vecPosBG2(0,(float)(SCREEN_HEIGHT-offset),0);
+			g_pSprite->Draw(g_pBackground, &bgRect, NULL, &vecPosBG2, 0xFFFFFFFF);
+			offset++;
+			offset = offset%SCREEN_HEIGHT;
+				
+			//시작하고 10초뒤에 골라인 올라옴
+			time_t crtTime;
+			time(&crtTime);
+			if(goaltime < crtTime)
+			{
+				g_GoalLine.Position.y -= 3.0f;
+				g_pSprite->Draw( g_GoalLine.Texture, &g_GoalLine.Source, &g_GoalLine.Center, &g_GoalLine.Position, 0xffffffff );
+			}
+		
+			//적 그림
+			if(currentEnemyNum > 0)
+			for(int i=0; i<om->ManageMaxEnemy(); i++)
+			{
+				if(om->getAlive(i) == TRUE)
+					g_pSprite->Draw( om->getEnemy(i).getTexture(), om->getEnemy(i).getSource(), om->getEnemy(i).getCenter(), om->getEnemy(i).getPosition(), 0xffffffff );
+			}
 
-		std::string scoreStr = "SCORE ";
-		scoreStr.append(std::to_string((crtTime-startTime)*10+currentScore));
+			// 골라인과 플레이어가 만나면 
+			if ( g_GoalLine.Position.y < vecPosition.y )
+			{
+				if(currentStage == 3)
+				{
+					MessageBox(NULL, "ALL STAGE CLEAR!", "Congraturations!", MB_OK);
+					exit(1);
+				}
+				// 스테이지 클리어
+				//MessageBox(NULL, "STAGE CLEAR!", "Congraturations!", MB_OK);
+				currentStage++;
+				delete om;
+				initStage(currentStage);
+				//isStageClear = true;
+			}
 
-		std::string lifeStr = "LIFE ";
-		lifeStr.append(std::to_string(life));
+			//cout<<om->getEnemyList().size()<<endl;
+			g_pSprite->Draw(g_pTexture, &rcSrcRect, &vecCenter, &vecPosition, 0xffffffff);
+		
+			RECT scoreRect = {400,20,-1,-1};
+			RECT stageRect = {220,20,-1,-1};
+			RECT lifeRect = {20,20,-1,-1};
 
-		if(scoreFont)
-			scoreFont->DrawText(g_pSprite, scoreStr.c_str(), scoreStr.length(), &scoreRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+			if(prevTimer==NULL)
+				prevTimer=crtTime;
+			if(crtTime-prevTimer!=0)
+			{
+				currentScore+=5;
+			}
+			prevTimer = crtTime;
 
-		if(lifeFont)
-			lifeFont->DrawText(g_pSprite, lifeStr.c_str(), lifeStr.length(), &lifeRect,DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+			//cout<<crtTime<<endl;
+			std::string scoreStr = "SCORE ";
+			scoreStr.append(std::to_string(currentScore));
+
+			std::string lifeStr = "LIFE ";
+			lifeStr.append(std::to_string(life));
+
+			std::string stageStr = "STAGE ";
+			stageStr.append(std::to_string(om->GetStageNumber()));
+
+			if(scoreFont)
+				scoreFont->DrawText(g_pSprite, scoreStr.c_str(), scoreStr.length(), &scoreRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+
+			if(lifeFont)
+				lifeFont->DrawText(g_pSprite, lifeStr.c_str(), lifeStr.length(), &lifeRect,DT_NOCLIP, D3DXCOLOR(0,0,0,1));
 	
-		g_pSprite->End();
-		// End the scene
-		g_pd3dDevice->EndScene();
-	}
+			if(stageFont)
+				stageFont->DrawText(g_pSprite, stageStr.c_str(), stageStr.length(), &stageRect, DT_NOCLIP, D3DXCOLOR(0,0,0,1));
+			g_pSprite->End();
+			// End the scene
+			g_pd3dDevice->EndScene();
+		}
 
-	// Present the backbuffer contents to the display
-	g_pd3dDevice->Present( NULL, NULL, NULL, NULL );
+		// Present the backbuffer contents to the display
+		g_pd3dDevice->Present( NULL, NULL, NULL, NULL );
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -359,7 +387,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 {
 	Initilize();
-
+	AllocConsole(); //콘솔창 소환
 	MSG msg;
 	ZeroMemory( &msg, sizeof(msg) );
 	while( msg.message!=WM_QUIT )
@@ -370,7 +398,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 			DispatchMessage( &msg );
 		}
 		else
-			Render();
+		{
+			Render();	
+		}
 	}
 
     UnregisterClass( "D3D Tutorial", g_wc.hInstance );
