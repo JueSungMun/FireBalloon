@@ -41,6 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 				if (obj->GetGameState() && obj->GetSceneNumber() == obj->GAME_SCENE)
 				{
+					delete obj;
 					obj = new GameResultScene();
 					obj->Initialize(hWnd);
 					obj->Draw(0.0f, *user);
@@ -51,6 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	UnregisterClass(_T("Fire_Balloon"), wcex.hInstance);
 	delete obj;
+	delete user;
 	return 0;
 }
 

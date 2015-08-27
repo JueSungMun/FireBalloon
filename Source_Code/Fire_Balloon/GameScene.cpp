@@ -260,6 +260,7 @@ void GameScene::Draw(float gameTime, User& user)
 		lifeStr.append(std::to_string(life));
 
 		std::string stageStr = "STAGE ";
+
 		stageStr.append(std::to_string(om->GetStageNumber()));
 
 		std::wstring scoreWstr = std::wstring(scoreStr.begin(), scoreStr.end());
